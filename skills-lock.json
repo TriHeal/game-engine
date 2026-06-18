@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "Unity Architecture": {
+      "source": "cryptorabea/claude_unity_dev_plugin",
+      "sourceType": "github",
+      "skillPath": "skills/unity-architecture/SKILL.md",
+      "computedHash": "c5af30e743b65a6f8460e7528148041ce7b56fc3a737b5bd55672da97d3a301c"
+    },
+    "Unity Fundamentals": {
+      "source": "cryptorabea/claude_unity_dev_plugin",
+      "sourceType": "github",
+      "skillPath": "skills/unity-fundamentals/SKILL.md",
+      "computedHash": "bbde6da2d7a73b8136793979dcdf046c9d4937b91819716eddf8eb2b6b5f6401"
+    },
+    "Unity Performance": {
+      "source": "cryptorabea/claude_unity_dev_plugin",
+      "sourceType": "github",
+      "skillPath": "skills/unity-performance/SKILL.md",
+      "computedHash": "731db00b8359fbe51ad9edbbd2845c6b06a96e049a61bb0bc42007c93f2d26de"
+    },
+    "Unity Workflows": {
+      "source": "cryptorabea/claude_unity_dev_plugin",
+      "sourceType": "github",
+      "skillPath": "skills/unity-workflows/SKILL.md",
+      "computedHash": "1a811573fc705dce6e0ca1b9b1c653b246b7dea94a74b7bfc5c2d7a1092afd61"
+    },
+    "unity-ecs-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/game-development/skills/unity-ecs-patterns/SKILL.md",
+      "computedHash": "e54a4f529fada156d3d82e42dcfc76674913eea9fb0bb292ca0323f8866c6ce9"
+    }
+  }
+}
