@@ -81,6 +81,31 @@ public class SailWind : MonoBehaviour
         SetTarget(200f, 0.06f);
     }
 
+    public void SetByCycleCounter(int cycle)
+    {
+        switch (cycle)
+        {
+            case 0:
+                SetSlack();
+                break;
+            case 1:
+                SetSlack();
+                break;
+            case 2:
+                SetLow();
+                break;
+            case 3:
+                SetMid();
+                break;
+            case 4:
+                SetFull();
+                break;
+            default:
+                SetFull();
+                break;
+        }
+    }
+
     // -------------------------
     // INTERNAL
     // -------------------------
