@@ -1,64 +1,108 @@
 using UnityEngine;
-
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BreathingCircle : MonoBehaviour
+public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public float minScale = 0.8f;
-    public float maxScale = 1.4f;
+    public float minScale = 4f;
+    public float maxScale = 6f;
 
-    public float inhaleDuration = 4f;
-    public float holdFullDuration = 1f;
-    public float exhaleDuration = 6f;
-    public float holdEmptyDuration = 1f;
+    public float growDuration = 4f;
+    public float holdAirDuration = 1.5f;
+    public float shrinkDuration = 6f;
+
+    [Header("Grace Period (early release)")]
+    public float gracePeriodDuration = 2f;
+    public float graceShrinkSpeed = 0.3f;
 
     public Image holdGlowImage;
-    private float phaseTimer = 0f;
+    public Text counterText;
 
-    public float maxDragDistance = 160f;
-
-    private enum BreathPhase
+    private enum BreathState
     {
-        Inhale,
-        HoldFull,
-        Exhale,
-        HoldEmpty
+        Idle,
+        Growing,
+        HoldingAir,
+        Grace,
+        Releasing
     }
 
-    private BreathPhase currentPhase = BreathPhase.Inhale;
+    private BreathState currentState = BreathState.Idle;
+    private float phaseTimer = 0f;
+
+    private BreathState savedStateForGrace;
+    private float savedTimerForGrace;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (currentState == BreathState.Idle)
+        {
+            currentState = BreathState.Growing;
+            phaseTimer = 0f;
+        }
+        else if (currentState == BreathState.Grace)
+        {
+            // Resume exactly where the finger left off - no reset, no penalty.
+            currentState = savedStateForGrace;
+            phaseTimer = savedTimerForGrace;
+        }
+        // Mid Growing/HoldingAir/Releasing: ignore, already in progress.
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (currentState == BreathState.Growing || currentState == BreathState.HoldingAir)
+        {
+            savedStateForGrace = currentState;
+            savedTimerForGrace = phaseTimer;
+            currentState = BreathState.Grace;
+            phaseTimer = 0f;
+        }
+        // Idle/Releasing: releasing the finger has no effect.
+    }
 
     void Update()
     {
         phaseTimer += Time.deltaTime;
 
-        switch (currentPhase)
+        switch (currentState)
         {
-            case BreathPhase.Inhale:
-                AnimateScale(minScale, maxScale, phaseTimer / inhaleDuration);
-
-                if (phaseTimer >= inhaleDuration)
-                    MoveToNextPhase(BreathPhase.HoldFull);
-                break;
-
-            case BreathPhase.HoldFull:
-                SetScale(maxScale);
-
-                if (phaseTimer >= holdFullDuration)
-                    MoveToNextPhase(BreathPhase.Exhale);
-                break;
-
-            case BreathPhase.Exhale:
-                AnimateScale(maxScale, minScale, phaseTimer / exhaleDuration);
-
-                if (phaseTimer >= exhaleDuration)
-                    MoveToNextPhase(BreathPhase.HoldEmpty);
-                break;
-
-            case BreathPhase.HoldEmpty:
+            case BreathState.Idle:
                 SetScale(minScale);
+                SetCounterText(null);
+                break;
 
-                if (phaseTimer >= holdEmptyDuration)
-                    MoveToNextPhase(BreathPhase.Inhale);
+            case BreathState.Growing:
+                AnimateScale(minScale, maxScale, phaseTimer / growDuration);
+                SetCounterNumber(Mathf.Clamp(Mathf.FloorToInt(phaseTimer / growDuration * 4f) + 1, 1, 4));
+
+                if (phaseTimer >= growDuration)
+                    MoveToNextPhase(BreathState.HoldingAir);
+                break;
+
+            case BreathState.HoldingAir:
+                SetScale(maxScale);
+                SetCounterText(null);
+
+                if (phaseTimer >= holdAirDuration)
+                    MoveToNextPhase(BreathState.Releasing);
+                break;
+
+            case BreathState.Grace:
+                float graceScale = Mathf.MoveTowards(transform.localScale.x, minScale, graceShrinkSpeed * Time.deltaTime);
+                SetScale(graceScale);
+                // Counter intentionally left untouched - stays frozen at its last value.
+
+                if (phaseTimer >= gracePeriodDuration)
+                    MoveToNextPhase(BreathState.Idle);
+                break;
+
+            case BreathState.Releasing:
+                AnimateScale(maxScale, minScale, phaseTimer / shrinkDuration);
+                SetCounterNumber(Mathf.Clamp(6 - Mathf.FloorToInt(phaseTimer / shrinkDuration * 6f), 1, 6));
+
+                if (phaseTimer >= shrinkDuration)
+                    MoveToNextPhase(BreathState.Idle);
                 break;
         }
 
@@ -78,21 +122,37 @@ public class BreathingCircle : MonoBehaviour
         transform.localScale = Vector3.one * scale;
     }
 
-    private void MoveToNextPhase(BreathPhase nextPhase)
+    private void MoveToNextPhase(BreathState nextState)
     {
-        currentPhase = nextPhase;
+        currentState = nextState;
         phaseTimer = 0f;
+    }
+
+    private void SetCounterNumber(int number)
+    {
+        if (counterText == null)
+            return;
+
+        counterText.text = number.ToString();
+    }
+
+    private void SetCounterText(string text)
+    {
+        if (counterText == null)
+            return;
+
+        counterText.text = text ?? string.Empty;
     }
 
     private void UpdateGlow()
     {
-       if (holdGlowImage == null)
-        return;
+        if (holdGlowImage == null)
+            return;
 
         Color color = holdGlowImage.color;
 
-        float targetAlpha = currentPhase == BreathPhase.HoldFull ? 0.75f : 0f;
-        float targetScale = currentPhase == BreathPhase.HoldFull ? 1.08f : 1f;
+        float targetAlpha = currentState == BreathState.HoldingAir ? 0.75f : 0f;
+        float targetScale = currentState == BreathState.HoldingAir ? 1.08f : 1f;
 
         color.a = Mathf.Lerp(color.a, targetAlpha, Time.deltaTime * 5f);
         holdGlowImage.transform.localScale = Vector3.Lerp(
@@ -103,5 +163,4 @@ public class BreathingCircle : MonoBehaviour
 
         holdGlowImage.color = color;
     }
-
 }

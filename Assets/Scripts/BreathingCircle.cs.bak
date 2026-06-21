@@ -1,0 +1,165 @@
+using UnityEngine;
+
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+{
+    public float minScale = 0.8f;
+    public float maxScale = 1.4f;
+
+    public float inhaleDuration = 4f;
+    public float holdFullDuration = 1f;
+    public float exhaleDuration = 6f;
+    public float holdEmptyDuration = 1f;
+
+    public Image holdGlowImage;
+    private float phaseTimer = 0f;
+
+    public float maxDragDistance = 160f;
+
+    [Header("Drag Smoothing")]
+    public float dragSmoothSpeed = 4f;
+
+    private enum BreathPhase
+    {
+        Inhale,
+        HoldFull,
+        Exhale,
+        HoldEmpty
+    }
+
+    private BreathPhase currentPhase = BreathPhase.Inhale;
+
+    private bool isDragging = false;
+    private float rawDragDistance01 = 0f;
+    private float smoothDragDistance01 = 0f;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        isDragging = true;
+        UpdateDragDistance(eventData);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        UpdateDragDistance(eventData);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isDragging = false;
+
+        // Released mid-cycle without finishing inhale or exhale: restart gently, no failure feedback.
+        if (currentPhase == BreathPhase.Inhale || currentPhase == BreathPhase.Exhale)
+            MoveToNextPhase(BreathPhase.Inhale);
+    }
+
+    private void UpdateDragDistance(PointerEventData eventData)
+    {
+        RectTransform rect = transform as RectTransform;
+        if (rect == null)
+            return;
+
+        Vector2 center = RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera, rect.position);
+        float distance = Vector2.Distance(eventData.position, center);
+
+        rawDragDistance01 = Mathf.Clamp01(distance / maxDragDistance);
+    }
+
+    void Update()
+    {
+        phaseTimer += Time.deltaTime;
+
+        // Smoothly chase the raw drag amount so the circle never snaps to the finger.
+        smoothDragDistance01 = Mathf.MoveTowards(smoothDragDistance01, rawDragDistance01, dragSmoothSpeed * Time.deltaTime);
+
+        switch (currentPhase)
+        {
+            case BreathPhase.Inhale:
+                AnimateScale(minScale, maxScale, GetInhaleProgress());
+
+                if (phaseTimer >= inhaleDuration && smoothDragDistance01 >= 0.98f)
+                    MoveToNextPhase(BreathPhase.HoldFull);
+                break;
+
+            case BreathPhase.HoldFull:
+                SetScale(maxScale);
+
+                if (phaseTimer >= holdFullDuration)
+                    MoveToNextPhase(BreathPhase.Exhale);
+                break;
+
+            case BreathPhase.Exhale:
+                AnimateScale(maxScale, minScale, GetExhaleProgress());
+
+                if (phaseTimer >= exhaleDuration && smoothDragDistance01 <= 0.02f)
+                    MoveToNextPhase(BreathPhase.HoldEmpty);
+                break;
+
+            case BreathPhase.HoldEmpty:
+                SetScale(minScale);
+
+                if (phaseTimer >= holdEmptyDuration)
+                    MoveToNextPhase(BreathPhase.Inhale);
+                break;
+        }
+
+        UpdateGlow();
+    }
+
+    // Inhale progress is driven by outward drag, but never moves faster than the timer-based pace allows.
+    private float GetInhaleProgress()
+    {
+        float timeProgress = Mathf.Clamp01(phaseTimer / inhaleDuration);
+        return isDragging ? Mathf.Min(timeProgress, smoothDragDistance01) : 0f;
+    }
+
+    // Exhale progress is driven by inward drag (1 -> 0), gated the same way as inhale.
+    private float GetExhaleProgress()
+    {
+        float timeProgress = Mathf.Clamp01(phaseTimer / exhaleDuration);
+        float dragProgress = 1f - smoothDragDistance01;
+        return isDragging ? Mathf.Min(timeProgress, dragProgress) : 0f;
+    }
+
+    private void AnimateScale(float from, float to, float progress)
+    {
+        progress = Mathf.Clamp01(progress);
+        float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+        float scale = Mathf.Lerp(from, to, smoothProgress);
+        SetScale(scale);
+    }
+
+    private void SetScale(float scale)
+    {
+        transform.localScale = Vector3.one * scale;
+    }
+
+    private void MoveToNextPhase(BreathPhase nextPhase)
+    {
+        currentPhase = nextPhase;
+        phaseTimer = 0f;
+    }
+
+    private void UpdateGlow()
+    {
+       if (holdGlowImage == null)
+        return;
+
+        Color color = holdGlowImage.color;
+
+        float targetAlpha = currentPhase == BreathPhase.HoldFull ? 0.75f : 0f;
+        float targetScale = currentPhase == BreathPhase.HoldFull ? 1.08f : 1f;
+
+        color.a = Mathf.Lerp(color.a, targetAlpha, Time.deltaTime * 5f);
+        holdGlowImage.transform.localScale = Vector3.Lerp(
+            holdGlowImage.transform.localScale,
+            Vector3.one * targetScale,
+            Time.deltaTime * 5f
+        );
+
+        holdGlowImage.color = color;
+    }
+
+}
