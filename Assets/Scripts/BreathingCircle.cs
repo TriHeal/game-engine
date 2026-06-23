@@ -4,8 +4,8 @@ using UnityEngine.EventSystems;
 
 public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public float minScale = 4f;
-    public float maxScale = 6f;
+    public float minScale = 6.2f;
+    public float maxScale = 9.3f;
 
     public float growDuration = 4f;
     public float holdAirDuration = 1.5f;
@@ -19,6 +19,14 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public Text counterText;
     public Image progressRingImage;
     public Text phaseLabelText;
+
+    [Tooltip("SailWind controller")]
+    public SailWind saildWind;
+
+    [Tooltip("Shower emission controller")]
+    public ShowerEmissionController showerController;
+
+    private int phaseCounter = 0;
 
     private const string InhaleLabel = "שאיפה";
     private const string HoldLabel = "החזקה";
@@ -98,7 +106,10 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 SetPhaseLabel(HoldLabel);
 
                 if (phaseTimer >= holdAirDuration)
+                {
                     MoveToNextPhase(BreathState.Releasing);
+                    AdvancePhase();
+                }
                 break;
 
             case BreathState.Grace:
@@ -107,7 +118,10 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 // Counter, ring and label intentionally left untouched - stay frozen at their last value.
 
                 if (phaseTimer >= gracePeriodDuration)
+                {
                     MoveToNextPhase(BreathState.Idle);
+                    RetreatPhase();
+                }
                 break;
 
             case BreathState.Releasing:
@@ -123,6 +137,32 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         }
 
         UpdateGlow();
+    }
+
+    private void AdvancePhase()
+    {
+        phaseCounter++;
+        Debug.Log($"[Breathing] AdvancePhase -> phaseCounter={phaseCounter}, state={currentState}, saildWind={(saildWind != null ? "OK" : "NULL")}, showerController={(showerController != null ? "OK" : "NULL")}");
+        if (saildWind != null) saildWind.SetByCycleCounter(phaseCounter);
+        if (showerController != null) showerController.IncreaseLevel();
+    }
+
+    private void RetreatPhase()
+    {
+        phaseCounter = Mathf.Max(0, phaseCounter - 1);
+        Debug.Log($"[Breathing] Interrupted -> phaseCounter={phaseCounter}, saildWind={(saildWind != null ? "OK" : "NULL")}, showerController={(showerController != null ? "OK" : "NULL")}");
+        if (saildWind != null) saildWind.SetByCycleCounter(phaseCounter);
+        if (showerController != null) showerController.DecreaseLevel();
+    }
+
+    public void ResetExercise()
+    {
+        currentState = BreathState.Idle;
+        phaseTimer = 0f;
+        phaseCounter = 0;
+        Debug.Log("[Breathing] ResetExercise -> back to Idle, phaseCounter=0");
+        if (saildWind != null) saildWind.SetByCycleCounter(0);
+        if (showerController != null) showerController.ResetLevel();
     }
 
     private void AnimateScale(float from, float to, float progress)

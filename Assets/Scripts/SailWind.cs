@@ -83,6 +83,7 @@ public class SailWind : MonoBehaviour
 
     public void SetByCycleCounter(int cycle)
     {
+        Debug.Log($"[Sail] SetByCycleCounter({cycle})");
         switch (cycle)
         {
             case 0:
@@ -114,5 +115,6 @@ public class SailWind : MonoBehaviour
     {
         targetScaleY = scaleY;
         targetPosY = posY;
+        Debug.Log($"[Sail] SetTarget scaleY={scaleY}, posY={posY}, baseScale.y={baseScale.y}, currentScaleY={currentScaleY}");
     }
 }

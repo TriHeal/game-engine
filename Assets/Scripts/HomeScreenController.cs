@@ -6,6 +6,9 @@ public class HomeScreenController : MonoBehaviour
     public GameObject homeScreen;
     public GameObject breathingScreen;
 
+    [Tooltip("BreathingCircle on the breathing screen's Orb, reset when leaving the screen")]
+    public BreathingCircle breathingCircle;
+
     public void OpenBreathing()
     {
         homeScreen.SetActive(false);
@@ -21,5 +24,6 @@ public class HomeScreenController : MonoBehaviour
     {
         breathingScreen.SetActive(false);
         homeScreen.SetActive(true);
+        if (breathingCircle != null) breathingCircle.ResetExercise();
     }
 }
