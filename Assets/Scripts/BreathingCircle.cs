@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Splines; // Required to communicate with Unity's Spline package
 
 public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -15,6 +16,18 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public float gracePeriodDuration = 2f;
     public float graceShrinkSpeed = 0.3f;
 
+    [Header("Raft Spline Speed Settings")]
+    [Tooltip("Drag the Parent Raft GameObject with the SplineAnimate component here")]
+    public SplineAnimate raftSplineAnimate;
+    public float baselineSpeed = 1.5f;
+    public float maxBoostSpeed = 15f;
+    [Tooltip("How much speed is added to the raft instantly upon a successful cycle")]
+    public float speedBoostPerCycle = 2.0f;
+    [Tooltip("How gently the raft drifts back toward baseline speed when idling or during grace")]
+    public float decelerationRate = 1.0f;
+    [Tooltip("How to speed up to target speed")]
+    public float SpeedUpRate = 1.0f;
+
     public Image holdGlowImage;
     public Text counterText;
     public Image progressRingImage;
@@ -27,6 +40,8 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public ShowerEmissionController showerController;
 
     private int phaseCounter = 0;
+    private float currentRaftSpeed = 1.5f;
+    private float targetRaftSpeed = 1.5f;
 
     private const string InhaleLabel = "שאיפה";
     private const string HoldLabel = "החזקה";
@@ -86,6 +101,9 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 SetCounterText(null);
                 SetProgressRing(false, 0f);
                 SetPhaseLabel(null);
+
+                // No activity: smoothly drift back down to the quiet baseline speed
+                DecelerateRaftSpeed();
                 break;
 
             case BreathState.Growing:
@@ -108,7 +126,7 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 if (phaseTimer >= holdAirDuration)
                 {
                     MoveToNextPhase(BreathState.Releasing);
-                    AdvancePhase();
+                    AdvancePhase(); // Triggers the single speed boost exactly here!
                 }
                 break;
 
@@ -116,6 +134,9 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 float graceScale = Mathf.MoveTowards(transform.localScale.x, minScale, graceShrinkSpeed * Time.deltaTime);
                 SetScale(graceScale);
                 // Counter, ring and label intentionally left untouched - stay frozen at their last value.
+
+                // Gently ease down speed but don't drop abruptly, preserving place
+                DecelerateRaftSpeed();
 
                 if (phaseTimer >= gracePeriodDuration)
                 {
@@ -130,6 +151,8 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
                 SetCounterNumber(Mathf.Clamp(6 - Mathf.FloorToInt(shrinkProgress * 6f), 1, 6));
                 SetProgressRing(true, 1f - shrinkProgress);
                 SetPhaseLabel(ExhaleLabel);
+                AdvanceToTargetRaftSpeed();
+
 
                 if (phaseTimer >= shrinkDuration)
                     MoveToNextPhase(BreathState.Idle);
@@ -139,12 +162,49 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         UpdateGlow();
     }
 
+    /// <summary>
+    /// Smoothly reduces the raft's speed toward the baseline when the player stops or is in grace.
+    /// </summary>
+    private void DecelerateRaftSpeed()
+    {
+        if (raftSplineAnimate == null) return;
+
+        currentRaftSpeed = Mathf.MoveTowards(currentRaftSpeed, baselineSpeed, decelerationRate * Time.deltaTime);
+        targetRaftSpeed = currentRaftSpeed;
+        SetSplineSpeed(currentRaftSpeed);
+    }
+
+    private void AdvanceToTargetRaftSpeed()
+    {
+        if (raftSplineAnimate == null) return;
+
+        currentRaftSpeed = Mathf.MoveTowards(currentRaftSpeed, targetRaftSpeed, SpeedUpRate * Time.deltaTime);
+        SetSplineSpeed(currentRaftSpeed);
+    }
+
+    private void SetSplineSpeed(float newSpeed)
+    {
+        // 1. Capture the exact percentage position along the spline track (0.0 to 1.0)
+        float currentProgress = raftSplineAnimate.NormalizedTime;
+
+        // 2. Apply the new velocity modifier
+        raftSplineAnimate.MaxSpeed = newSpeed;
+
+        // 3. Force Unity to retain the exact position, preventing jumps or reversals
+        raftSplineAnimate.NormalizedTime = currentProgress;
+    }
+
     private void AdvancePhase()
     {
         phaseCounter++;
         Debug.Log($"[Breathing] AdvancePhase -> phaseCounter={phaseCounter}, state={currentState}, saildWind={(saildWind != null ? "OK" : "NULL")}, showerController={(showerController != null ? "OK" : "NULL")}");
         if (saildWind != null) saildWind.SetByCycleCounter(phaseCounter);
         if (showerController != null) showerController.IncreaseLevel();
+
+        if (raftSplineAnimate != null)
+        {
+            targetRaftSpeed = Mathf.Min(currentRaftSpeed + speedBoostPerCycle, maxBoostSpeed);
+        }
     }
 
     private void RetreatPhase()
@@ -155,14 +215,37 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         if (showerController != null) showerController.DecreaseLevel();
     }
 
-    public void ResetExercise()
+    public void StopExercise()
     {
         currentState = BreathState.Idle;
         phaseTimer = 0f;
         phaseCounter = 0;
+        
+        currentRaftSpeed = baselineSpeed;
+        targetRaftSpeed = currentRaftSpeed;
+        if (raftSplineAnimate != null)
+        {
+            raftSplineAnimate.MaxSpeed = 0;
+            raftSplineAnimate.Restart(false);
+        } 
+
         Debug.Log("[Breathing] ResetExercise -> back to Idle, phaseCounter=0");
         if (saildWind != null) saildWind.SetByCycleCounter(0);
         if (showerController != null) showerController.ResetLevel();
+    }
+
+    public void StartExercise()
+    {
+        if (raftSplineAnimate != null)
+        {
+            // 1. Force the playback time to go back to the absolute beginning (0.0 = 0%)
+            raftSplineAnimate.NormalizedTime = 0f;
+            raftSplineAnimate.ElapsedTime = 0f;
+            
+            currentRaftSpeed = baselineSpeed;
+            raftSplineAnimate.MaxSpeed = currentRaftSpeed;
+            raftSplineAnimate.Play();
+        }
     }
 
     private void AnimateScale(float from, float to, float progress)

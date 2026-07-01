@@ -13,6 +13,7 @@ public class HomeScreenController : MonoBehaviour
     {
         homeScreen.SetActive(false);
         breathingScreen.SetActive(true);
+        if (breathingCircle != null) breathingCircle.StartExercise();
     }
 
     public void OpenStoneBreak()
@@ -24,6 +25,6 @@ public class HomeScreenController : MonoBehaviour
     {
         breathingScreen.SetActive(false);
         homeScreen.SetActive(true);
-        if (breathingCircle != null) breathingCircle.ResetExercise();
+        if (breathingCircle != null) breathingCircle.StopExercise();
     }
 }
