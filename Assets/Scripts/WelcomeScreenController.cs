@@ -128,6 +128,7 @@ public class WelcomeScreenController : MonoBehaviour
         if (nextGroup != null) nextGroup.alpha = 0f;
 
         float startWelcome = welcomeGroup != null ? welcomeGroup.alpha : 1f;
+        float startVolume = ambient != null ? ambient.volume : 0f;
         float t = 0f;
         while (t < 1f)
         {
@@ -135,13 +136,17 @@ public class WelcomeScreenController : MonoBehaviour
             float eased = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t));
             if (welcomeGroup != null) welcomeGroup.alpha = Mathf.Lerp(startWelcome, 0f, eased);
             if (nextGroup != null) nextGroup.alpha = eased;
+            // The ambient loop belongs to the welcome screen, so retire it with the
+            // transition instead of letting it bleed under the next screen.
+            if (ambient != null) ambient.volume = Mathf.Lerp(startVolume, 0f, eased);
             yield return null;
         }
 
         if (nextGroup != null) nextGroup.alpha = 1f;
+        if (ambient != null) { ambient.volume = 0f; ambient.Stop(); }
         if (breathePulseTarget != null) breathePulseTarget.localScale = pulseBaseScale;
         if (welcomeScreen != null) welcomeScreen.SetActive(false);
-        Debug.Log("[Welcome] Cross-fade complete -> welcome hidden, next screen active");
+        Debug.Log("[Welcome] Cross-fade complete -> welcome hidden, ambient stopped, next screen active");
     }
 
     private IEnumerator FadeGroup(CanvasGroup group, float from, float to, float duration)
