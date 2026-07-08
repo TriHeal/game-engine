@@ -1,0 +1,13 @@
+using UnityEngine;
+
+public class JumpRock : MonoBehaviour
+{
+    [Tooltip("Where the duck will physically land on top of this rock")]
+    public Transform landingPoint;
+
+    // Optional: Highlight the rock when the mouse hovers over it
+    private void OnMouseEnter()
+    {
+        // Add hover visual feedback here if desired
+    }
+}
