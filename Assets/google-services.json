@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "935486565850",
+    "firebase_url": "https://tri-heal-dev-d9484-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tri-heal-dev-d9484",
+    "storage_bucket": "tri-heal-dev-d9484.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935486565850:android:eb76337c902219b63164e3",
+        "android_client_info": {
+          "package_name": "com.devspirit.triheal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98MsQ5uCg5kwPViWOHHGFSCVlTSlqDrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
