@@ -14,7 +14,7 @@ public class JumpRock : MonoBehaviour
     public string rockTitle = "מה קרה?";
     
     [Header("Question Records Data")]
-    public StructureData storyData = new StructureData();
+    public RockStoryData storyData = new RockStoryData();
 
     private Material rockMaterial;
 
@@ -55,12 +55,11 @@ public class JumpRock : MonoBehaviour
 }
 
 [System.Serializable]
-public class StructureData
+public class RockStoryData
 {
-    public string locationText; // איפה זה היה?
-    public string whoWasThere;   // מי היה שם?
-    public string feelingText;   // מה הרגשתי?
-    public string thoughtText;   // מה חשבתי?
-    public string bodyFeeling;   // מה הרגשתי בגוף?
-    public string realization;  // הבנתי משהו?
+    public string whereText;
+    public string feelingText;
+    public string thinkingText;
+    public string bodyFeelingText;
+    public string goalText;
 }

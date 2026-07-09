@@ -18,6 +18,7 @@ public class LakeMapManager : MonoBehaviour
     public TMPro.TextMeshProUGUI titleText;
     public GameObject fullCardInfoUI;
     public GameObject zoomOutButton;
+    public FullCardUIController cardUIController;
 
     private JumpRock currentlySelectedRock;
     private JumpRock lastClickedRock;
@@ -95,7 +96,7 @@ public class LakeMapManager : MonoBehaviour
     {
         if (previewTitleUI != null) previewTitleUI.SetActive(false);
     }
-
+    
     private void TriggerJumpAndPopup(JumpRock rock)
     {
         currentlySelectedRock = rock;
@@ -104,44 +105,55 @@ public class LakeMapManager : MonoBehaviour
         // Command duck to jump to the rock's landing point
         duckController.JumpTo(rock.landingPoint.position, () =>
         {
-            // Callback executing once jump completes:
-            
-            // A. Align close-up Cinemachine camera with the rock's camera view point
+            // 1. Position the close-up Cinemachine camera
             if (rock.cameraZoomPoint != null && rockZoomCam != null)
             {
                 rockZoomCam.transform.position = rock.cameraZoomPoint.position;
                 rockZoomCam.transform.rotation = rock.cameraZoomPoint.rotation;
 
-                // Increase priority so Cinemachine smoothly blends to the close-up camera
                 rockZoomCam.Priority = 20;
                 followCam.Priority = 10;
             }
 
-            // B. Show Info Card & Zoom Out Button
-            if (fullCardInfoUI != null) fullCardInfoUI.SetActive(true);
+            // 2. Open the card and pass the active rock data
+            if (cardUIController != null)
+            {
+                cardUIController.OpenCardForRock(rock);
+            }
+
+            // 3. Show zoom out button
             if (zoomOutButton != null) zoomOutButton.SetActive(true);
         });
     }
-
+    
     /// <summary>
     /// UI Event: Attach this function to your "Zoom Out" UI Button OnClick() event
     /// </summary>
     public void OnClick_ZoomOutToLand()
     {
-        // 1. Hide Popups
-        if (fullCardInfoUI != null) fullCardInfoUI.SetActive(false);
+        // 1. Save all typed card data & close the card panel
+        if (cardUIController != null && cardUIController.gameObject.activeSelf)
+        {
+            cardUIController.SaveAndClose(); // Saves fields, clears rock fog, and sets fullCardInfoUI inactive
+        }
+        else if (fullCardInfoUI != null)
+        {
+            // Fallback just in case controller isn't linked
+            fullCardInfoUI.SetActive(false);
+        }
+
         if (previewTitleUI != null) previewTitleUI.SetActive(false);
 
         // 2. Command duck to jump back to the shore landing point
         if (landReturnPoint != null)
         {
+            // Revert Cinemachine camera priorities back to follow camera
+            if (rockZoomCam != null) rockZoomCam.Priority = 5;
+            if (followCam != null) followCam.Priority = 10;
+            
             duckController.JumpTo(landReturnPoint.position, () =>
             {
                 // Callback executing once returned to shore:
-                // Revert Cinemachine camera priorities back to follow camera
-                if (rockZoomCam != null) rockZoomCam.Priority = 5;
-                if (followCam != null) followCam.Priority = 10;
-
                 if (zoomOutButton != null) zoomOutButton.SetActive(false);
             });
         }
