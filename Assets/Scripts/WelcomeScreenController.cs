@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Calm entry "front door" for the child client. Fades the Hebrew welcome panel
@@ -18,6 +19,9 @@ public class WelcomeScreenController : MonoBehaviour
 
     [Tooltip("What the CTA opens. The Home hub today; swap for session-entry later.")]
     public GameObject nextScreen;
+
+    [Tooltip("Wired to Continue() in code (Start), not via the Inspector OnClick list -- keeps this working even if the button lives inside a prefab instance whose serialized OnClick target would otherwise be dropped/lost.")]
+    public Button ctaButton;
 
     [Header("Fade")]
     public CanvasGroup welcomeGroup;
@@ -51,6 +55,7 @@ public class WelcomeScreenController : MonoBehaviour
     {
         if (welcomeScreen != null) welcomeScreen.SetActive(true);
         if (nextScreen != null) nextScreen.SetActive(false);
+        if (ctaButton != null) ctaButton.onClick.AddListener(Continue);
 
         if (welcomeGroup != null)
         {
