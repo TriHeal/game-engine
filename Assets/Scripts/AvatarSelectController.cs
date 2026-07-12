@@ -33,8 +33,11 @@ public class AvatarSelectController : MonoBehaviour
     [Tooltip("Disabled until this screen is actually shown, enabled again while it's up.")]
     public Camera stageCamera;
 
-    [Tooltip("One instance per avatar, same order as avatarIds/avatarDisplayNames. Only the current index is active at a time.")]
+    [Tooltip("One instance per avatar, same order as the catalog's entries. Only the current index is active at a time.")]
     public GameObject[] avatarInstances;
+
+    [Tooltip("Shared id/displayName source; falls back to the hardcoded arrays below if left empty.")]
+    public AvatarCatalog catalog;
 
     public string[] avatarIds = { "cat", "duck", "mole_monster", "sheep" };
     public string[] avatarDisplayNames = { "חתול", "ברווז", "חפרפרת", "כבשה" };
@@ -48,14 +51,23 @@ public class AvatarSelectController : MonoBehaviour
     public Button nextButton;
     public Button selectButton;
 
-    public const string SelectedAvatarKey = "SelectedAvatarId";
-
     private int currentIndex;
     private bool wasScreenActive;
     private bool transitioning;
 
     void Start()
     {
+        if (catalog != null && catalog.entries != null && catalog.entries.Length > 0)
+        {
+            avatarIds = new string[catalog.entries.Length];
+            avatarDisplayNames = new string[catalog.entries.Length];
+            for (int i = 0; i < catalog.entries.Length; i++)
+            {
+                avatarIds[i] = catalog.entries[i].id;
+                avatarDisplayNames[i] = catalog.entries[i].displayName;
+            }
+        }
+
         if (avatarSelectScreen != null) avatarSelectScreen.SetActive(true);
         if (nextScreen != null) nextScreen.SetActive(false);
 
@@ -123,8 +135,7 @@ public class AvatarSelectController : MonoBehaviour
         string id = currentIndex < avatarIds.Length ? avatarIds[currentIndex] : null;
         if (!string.IsNullOrEmpty(id))
         {
-            PlayerPrefs.SetString(SelectedAvatarKey, id);
-            PlayerPrefs.Save();
+            AvatarSession.Instance.SetSelectedAvatar(id);
         }
 
         Debug.Log($"[AvatarSelect] Select -> chose '{id}', cross-fading to next screen");
@@ -180,7 +191,7 @@ public class AvatarSelectController : MonoBehaviour
     [UnityEditor.MenuItem("Tri-Heal/Avatar/Clear Selected Avatar")]
     private static void ClearSelectedAvatar()
     {
-        PlayerPrefs.DeleteKey(SelectedAvatarKey);
+        PlayerPrefs.DeleteKey(AvatarSession.SelectedAvatarKey);
         PlayerPrefs.Save();
         Debug.Log("[AvatarSelect] Cleared selected avatar pref");
     }
