@@ -40,8 +40,8 @@ public class LakeMapManager : MonoBehaviour
 
     private void Update()
     {
-        // Detect player clicks on rocks when the duck is stationary
-        if (Input.GetMouseButtonDown(0) && duckController != null && !duckController.IsJumping)
+        // Detect player clicks on rocks when the duck is stationary and not already on a rock
+        if (Input.GetMouseButtonDown(0) && duckController != null && !duckController.IsJumping && currentlySelectedRock == null)
         {
             HandleRockClick();
         }
@@ -153,6 +153,7 @@ public class LakeMapManager : MonoBehaviour
             
             duckController.JumpTo(landReturnPoint.position, () =>
             {
+                currentlySelectedRock = null;
                 // Callback executing once returned to shore:
                 if (zoomOutButton != null) zoomOutButton.SetActive(false);
             });

@@ -8,10 +8,12 @@ public class JumpRock : MonoBehaviour
     public Transform cameraZoomPoint; // Empty GameObject placed close to this rock for camera view
     public Renderer rockRenderer;
     public ParticleSystem fogParticles; // Or a low-poly fog mesh
+    public float maxFogValue = 40f;
+    public GameObject GoalIcon;
 
     [Header("Rock State")]
     [Range(0f, 100f)] public float fogPercentage = 100f;
-    public string rockTitle = "מה קרה?";
+    public string rockTitle = "";
     
     [Header("Question Records Data")]
     public RockStoryData storyData = new RockStoryData();
@@ -22,6 +24,11 @@ public class JumpRock : MonoBehaviour
     {
         if (rockRenderer != null)
             rockMaterial = rockRenderer.material;
+        
+        if (GoalIcon != null)
+        {
+            GoalIcon.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -36,9 +43,13 @@ public class JumpRock : MonoBehaviour
         {
             var main = fogParticles.main;
             var emission = fogParticles.emission;
-            emission.rateOverTime = (fogPercentage / 100f) * 20f; // Scale fog down
+            emission.rateOverTime = (fogPercentage / 100f) * maxFogValue; // Scale fog down
             
-            if (fogPercentage <= 0) fogParticles.Stop();
+            if (fogPercentage <= 0)
+            {
+                fogParticles.Stop();
+                if (GoalIcon != null) GoalIcon.SetActive(true);
+            }
         }
     }
 

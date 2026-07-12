@@ -30,7 +30,7 @@ public class FullCardUIController : MonoBehaviour
         new FeelingOption { feelingName = "פחד", feelingColor = new Color(0.6f, 0.3f, 0.8f) },
         new FeelingOption { feelingName = "שמחה", feelingColor = new Color(1f, 0.85f, 0.2f) },
         new FeelingOption { feelingName = "כעס", feelingColor = new Color(0.9f, 0.3f, 0.3f) },
-        new FeelingOption { feelingName = "עצב", feelingColor = new Color(0.3f, 0.6f, 0.9f) }
+        new FeelingOption { feelingName = "עצב", feelingColor = new Color(0.3f, 0.3f, 0.9f) }
     };
 
     private JumpRock currentRock;
@@ -116,10 +116,38 @@ public class FullCardUIController : MonoBehaviour
             if (feelingDropdown != null)
                 currentRock.storyData.feelingText = feelingsList[feelingDropdown.value].feelingName;
 
-            // Reduce/clear fog on completion!
-            currentRock.UpdateFogLevel(0f);
+            // Reduce/clear fog dynamically based on completed info!
+            float newFog = CalculateFogLevel();
+            currentRock.UpdateFogLevel(newFog);
         }
 
         gameObject.SetActive(false);
+    }
+
+    private float CalculateFogLevel()
+    {
+        bool hasTitle = titleInput != null && !string.IsNullOrWhiteSpace(titleInput.text);
+        bool hasWhere = whereInput != null && !string.IsNullOrWhiteSpace(whereInput.text);
+        bool hasFeeling = feelingDropdown != null && feelingDropdown.value > 0;
+        bool hasThinking = thinkingInput != null && !string.IsNullOrWhiteSpace(thinkingInput.text);
+        bool hasBodyFeeling = bodyFeelingInput != null && !string.IsNullOrWhiteSpace(bodyFeelingInput.text);
+        bool hasGoal = goalInput != null && !string.IsNullOrWhiteSpace(goalInput.text);
+
+        // Special rule: if we have feeling + goal, it can go all the way down to 0 right away
+        if (hasFeeling && hasGoal)
+        {
+            return 0f;
+        }
+
+        // Standard rule: fog goes down with the more info we have (based on 6 total fields)
+        int completedCount = 0;
+        if (hasTitle) completedCount++;
+        if (hasWhere) completedCount++;
+        if (hasFeeling) completedCount++;
+        if (hasThinking) completedCount++;
+        if (hasBodyFeeling) completedCount++;
+        if (hasGoal) completedCount++;
+
+        return 100f * (1f - (float)completedCount / 6f);
     }
 }
