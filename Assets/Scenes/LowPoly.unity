@@ -243,6 +243,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8528410969833698634, guid: bde0b0b41bb9b804ebfe2be8949d92c3, type: 3}
   m_PrefabInstance: {fileID: 7641369}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &10523717 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 166016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
+  m_PrefabInstance: {fileID: 1851217606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &19541630
 GameObject:
   m_ObjectHideFlags: 0
@@ -10747,6 +10752,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 369566197773593865, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
   m_PrefabInstance: {fileID: 1527367443}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &811172382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811172377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7899d658604d649749f44d008843afad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HomeAvatarDisplay
+  placeholder: {fileID: 10523717}
 --- !u!1001 &812005137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20325,6 +20343,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4496900895665180722, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 811172379}
+    - targetCorrespondingSourceObject: {fileID: 4496900895665180722, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 811172382}
   m_SourcePrefab: {fileID: 100100000, guid: 7cfe15217661ba142a206df60afe0baf, type: 3}
 --- !u!1001 &1533243017
 PrefabInstance:
