@@ -27,6 +27,7 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public float decelerationRate = 1.0f;
     [Tooltip("How to speed up to target speed")]
     public float SpeedUpRate = 1.0f;
+    public bool AutoStart = false;
 
     public Image holdGlowImage;
     public Text counterText;
@@ -62,6 +63,15 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     private BreathState savedStateForGrace;
     private float savedTimerForGrace;
 
+    private void Start()
+    {
+        if (AutoStart)
+        {
+            StartExercise();
+        }
+
+    }
+    
     public void OnPointerDown(PointerEventData eventData)
     {
         if (currentState == BreathState.Idle)
