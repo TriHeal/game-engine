@@ -1,0 +1,83 @@
+using UnityEngine;
+
+public class DuckJumpController : MonoBehaviour
+{
+    public float jumpDuration = 0.8f;   // How many seconds the jump takes
+    public float jumpHeight = 2.0f;     // How high the arc peaks mid-air
+    public LayerMask rockLayer;         // Assign a 'Rock' layer to optimize raycasts
+
+    private bool isJumping = false;
+    private Vector3 startPosition;
+    private Vector3 targetPosition;
+    private float jumpTimer = 0f;
+
+    void Update()
+    {
+        // 1. Listen for player input selection
+        if (Input.GetMouseButtonDown(0) && !isJumping)
+        {
+            HandleRockSelection();
+        }
+
+        // 2. If a jump is in progress, animate it frameside
+        if (isJumping)
+        {
+            ExecuteJumpArc();
+        }
+    }
+
+    private void HandleRockSelection()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // Cast a ray from the screen to detect if the child clicked a rock
+        if (Physics.Raycast(ray, out hit, 100f, rockLayer))
+        {
+            JumpRock clickedRock = hit.collider.GetComponent<JumpRock>();
+            if (clickedRock != null && clickedRock.landingPoint != null)
+            {
+                // Set up the movement coordinates
+                startPosition = transform.position;
+                targetPosition = clickedRock.landingPoint.position;
+                
+                // Initialize timing variables
+                jumpTimer = 0f;
+                isJumping = true;
+            }
+        }
+    }
+
+    private void ExecuteJumpArc()
+    {
+        jumpTimer += Time.deltaTime;
+        float progress = Mathf.Clamp01(jumpTimer / jumpDuration);
+
+        // Linear interpolation along the flat ground plane (X and Z coordinates)
+        Vector3 currentGroundPos = Vector3.Lerp(startPosition, targetPosition, progress);
+
+        // Parabola math to calculate the vertical height curve (Y coordinate)
+        // Formula: height = 4 * height_multiplier * progress * (1 - progress)
+        float currentHeight = 4f * jumpHeight * progress * (1f - progress);
+
+        // Apply both parts back to the duck's actual position
+        transform.position = new Vector3(currentGroundPos.x, currentGroundPos.y + currentHeight, currentGroundPos.z);
+
+        // Smoothly rotate the duck to face its landing destination
+        Vector3 lookDirection = (targetPosition - startPosition);
+        lookDirection.y = 0; // Lock rotation axis so the duck doesn't pitch into the sky
+        if (lookDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, progress * 2f);
+        }
+
+        // End the jump sequence cleanly when progress reaches 100%
+        if (progress >= 1f)
+        {
+            isJumping = false;
+            // Snap perfectly to destination to clear any rounding errors
+            transform.position = targetPosition; 
+        }
+    }
+}
