@@ -129,6 +129,8 @@ public class LoginScreenController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private const bool VerifyOtpWithBackendInEditor = false;
+
     private void EnterMockAuthMode()
     {
         mockAuthMode = true;
@@ -207,9 +209,9 @@ public class LoginScreenController : MonoBehaviour
         foreach (var field in digitFields) code.Append(field.text);
 
 #if UNITY_EDITOR
-        if (mockAuthMode)
+        if (mockAuthMode && !VerifyOtpWithBackendInEditor)
         {
-            Debug.Log("[Login] Editor mock auth -> any 6-digit code is accepted, skipping backend verify call");
+            Debug.Log("[Login] Editor mock auth -> accepting any 6-digit code");
             StartCoroutine(SignIn("mock-token"));
             return;
         }
@@ -257,6 +259,10 @@ public class LoginScreenController : MonoBehaviour
                 yield break;
             }
 
+            Debug.Log(
+                $"[Login] OTP verified. role={response.role}, patientId={response.patientId}, sessionId={response.sessionId}, realtimePath={response.realtimePath}, activities={response.activities?.Length ?? 0}"
+            );
+
             yield return SignIn(response.token);
         }
     }
@@ -266,9 +272,15 @@ public class LoginScreenController : MonoBehaviour
 #if UNITY_EDITOR
         if (mockAuthMode)
         {
-            Debug.Log("[Login] Mock sign-in (Editor bypass) -> cross-fading to next screen");
+            Debug.Log(
+                VerifyOtpWithBackendInEditor
+                    ? "[Login] Backend OTP verified -> skipping Firebase SDK sign-in in Editor"
+                    : "[Login] Mock sign-in -> skipping backend and Firebase SDK"
+            );
+
             PlayerPrefs.SetInt(MockSignedInKey, 1);
             PlayerPrefs.Save();
+
             transitioning = true;
             yield return CrossFade();
             yield break;
@@ -357,15 +369,28 @@ public class LoginScreenController : MonoBehaviour
     {
         public string token;
         public string role;
+        public string patientId;
+        public string sessionId;
+        public string realtimePath;
+        public ActivitySelection[] activities;
+    }
+
+    [Serializable]
+    private class ActivitySelection
+    {
+        public string type;
+        public int order;
+        public string status;
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.MenuItem("Tri-Heal/Login/Clear Editor Mock Session")]
-    private static void ClearMockSession()
+    [UnityEditor.MenuItem("Tri-Heal/Login/Clear Editor Session")]
+    private static void ClearEditorSession()
     {
         PlayerPrefs.DeleteKey(MockSignedInKey);
         PlayerPrefs.Save();
-        Debug.Log("[Login] Cleared Editor mock session -> next Play will show Login again");
+
+        Debug.Log("[Login] Editor mock session cleared.");
     }
 #endif
 }
