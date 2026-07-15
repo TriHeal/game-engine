@@ -14,6 +14,9 @@ public class AvatarCatalog : ScriptableObject
         public string id;
         public string displayName;
         public GameObject prefab;
+
+        [Tooltip("Added on top of wherever a consumer places this avatar. Most prefabs have their root at their feet (offset stays zero); a few (e.g. the mole) have their root elsewhere, so this corrects for that per-prefab quirk once, here, instead of every spawn site re-discovering it.")]
+        public Vector3 spawnOffset;
     }
 
     public Entry[] entries = new Entry[0];

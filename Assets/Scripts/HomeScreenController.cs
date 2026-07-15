@@ -21,6 +21,11 @@ public class HomeScreenController : MonoBehaviour
         SceneManager.LoadScene("rocksFlow");
     }
 
+    public void OpenMemoryLake()
+    {
+        SceneManager.LoadScene("MemoryLake");
+    }
+
     public void BackToHome()
     {
         breathingScreen.SetActive(false);
