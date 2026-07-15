@@ -37,7 +37,7 @@ public class LoginScreenController : MonoBehaviour
     public TMP_Text errorText;
 
     [Header("Backend")]
-    public string baseUrl = "http://localhost:3003";
+    public string baseUrl = "https://backend-heal.onrender.com";
 
     private FirebaseAuth auth;
     private bool submitting;
