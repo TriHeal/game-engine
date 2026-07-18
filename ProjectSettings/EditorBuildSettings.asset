@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LowPoly.unity
+    path: Assets/Scenes/HomeScreen.unity
     guid: e7efa71cfb31f002b94d02190481a6d7
   - enabled: 1
-    path: Assets/Scenes/main.unity
+    path: Assets/Scenes/Demo.unity
     guid: 1bf16276846dc4bd296b8514ea11a728
   - enabled: 1
     path: Assets/Scenes/rocksFlow.unity
@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SyncRiver.unity
     guid: 4f5d49049bbba9d80b6306725893d4b8
+  - enabled: 1
+    path: Assets/Scenes/BondingForest.unity
+    guid: 1230dfd11f2632bb2bf5d7bb86101f82
   - enabled: 1
     path: Assets/Scenes/MemoryLake.unity
     guid: ad0ac0a01629fb779b9ba3cbe630f0f4

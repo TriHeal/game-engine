@@ -39,6 +39,11 @@ public class HomeScreenController : MonoBehaviour
         SceneManager.LoadScene("MemoryLake");
     }
 
+    public void OpenBondingForest()
+    {
+        SceneManager.LoadScene("BondingForest");
+    }
+
     public void OpenSelectAvatar()
     {
         if (AvatarSelectScreen != null)

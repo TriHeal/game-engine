@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class ForestPlantingManager : MonoBehaviour
 {
@@ -111,5 +113,19 @@ public class ForestPlantingManager : MonoBehaviour
         // 5. Close popup UI and resume ground clicking
         if (feelingPopupUI != null) feelingPopupUI.SetActive(false);
         isWaitingForFeeling = false;
+    }
+
+    public void GoBack()
+    {
+        if (isWaitingForFeeling)
+        {
+            // Close popup UI and resume ground clicking
+            if (feelingPopupUI != null) feelingPopupUI.SetActive(false);
+            isWaitingForFeeling = false;
+        }
+        else
+        {
+            SceneManager.LoadScene("HomeScreen");
+        }
     }
 }

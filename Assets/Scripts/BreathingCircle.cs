@@ -344,6 +344,6 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public void GoBack()
     {
-        SceneManager.LoadScene("LowPoly");
+        SceneManager.LoadScene("HomeScreen");
     }
 }

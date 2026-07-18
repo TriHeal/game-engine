@@ -135,7 +135,7 @@ public class LakeMapManager : MonoBehaviour
         // 0. If we are on land and the user pressed Back
         if (currentlySelectedRock == null)
         {
-            SceneManager.LoadScene("LowPoly");
+            SceneManager.LoadScene("HomeScreen");
         }
         
         // 1. Save all typed card data & close the card panel
