@@ -16,12 +16,16 @@ MonoBehaviour:
   - id: cat
     displayName: "\u05D7\u05EA\u05D5\u05DC"
     prefab: {fileID: 137848, guid: b274f055acd44484e979267107f9a3c4, type: 3}
+    spawnOffset: {x: 0, y: 0, z: 0}
   - id: duck
     displayName: "\u05D1\u05E8\u05D5\u05D5\u05D6"
     prefab: {fileID: 166016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
+    spawnOffset: {x: 0, y: 0, z: 0}
   - id: mole_monster
     displayName: "\u05D7\u05E4\u05E8\u05E4\u05E8\u05EA"
     prefab: {fileID: 198342, guid: fe9bab289d42f0244859df1b1359454b, type: 3}
+    spawnOffset: {x: 0, y: 9.01, z: 0}
   - id: sheep
     displayName: "\u05DB\u05D1\u05E9\u05D4"
     prefab: {fileID: 106736, guid: 46398a79a336cba4c9c8998b2bff56c2, type: 3}
+    spawnOffset: {x: 0, y: 0, z: 0}

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Splines; // Required to communicate with Unity's Spline package
+using UnityEngine.SceneManagement;
 
 public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -339,5 +340,10 @@ public class BreathingCircle : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         );
 
         holdGlowImage.color = color;
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("HomeScreen");
     }
 }

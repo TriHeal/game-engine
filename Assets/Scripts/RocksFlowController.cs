@@ -5,6 +5,6 @@ public class RocksFlowController : MonoBehaviour
 {
     public void BackToHome()
     {
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene("HomeScreen");
     }
 }

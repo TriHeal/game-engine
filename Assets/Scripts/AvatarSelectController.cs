@@ -4,45 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Carousel avatar picker shown once between Welcome and Home. One 3D animal
-/// (cat / duck / mole / sheep) is on stage at a time, playing its idle animation;
-/// Prev/Next cycle through them and Select confirms and cross-fades into
-/// <see cref="nextScreen"/> (Home today).
-///
-/// Entry fade-in is owned by the previous screen's controller (wired via its own
-/// "nextGroup" pointing at <see cref="avatarGroup"/>), matching the Welcome/Login
-/// pattern. This controller only owns fading itself back out on Select.
+/// This component now lives DIRECTLY on the Avatar Select Screen GameObject.
+/// It triggers its initial setup and checks whenever it is enabled.
 /// </summary>
 public class AvatarSelectController : MonoBehaviour
 {
-    [Header("Screens")]
-    public GameObject avatarSelectScreen;
+    [Header("Navigation Links")]
+    [Tooltip("The Main Game/Dashboard view to activate next.")]
+    public GameObject selectGameScreen;
+    [Tooltip("Optional CanvasGroup on the game screen for smooth cross-fading.")]
+    public CanvasGroup selectGameGroup;
 
-    [Tooltip("What Select opens (Home).")]
-    public GameObject nextScreen;
-
-    [Header("Fade")]
-    public CanvasGroup avatarGroup;
-
-    [Tooltip("Optional CanvasGroup on the next screen. If null, the next screen simply activates under the fading-out avatar picker.")]
-    public CanvasGroup nextGroup;
-
-    public float crossFadeDuration = 0.8f;
+    [Header("Fade & Canvas")]
+    private CanvasGroup myCanvasGroup;
+    public float crossFadeDuration = 0.5f;
 
     [Header("Avatar Stage")]
-    [Tooltip("Disabled until this screen is actually shown, enabled again while it's up.")]
+    [Tooltip("Disabled until this screen is active.")]
     public Camera stageCamera;
-
-    [Tooltip("One instance per avatar, same order as the catalog's entries. Only the current index is active at a time.")]
+    [Tooltip("One instance per avatar. Only the current index is active at a time.")]
     public GameObject[] avatarInstances;
 
-    [Tooltip("Shared id/displayName source; falls back to the hardcoded arrays below if left empty.")]
+    [Header("Catalog Setup")]
     public AvatarCatalog catalog;
-
     public string[] avatarIds = { "cat", "duck", "mole_monster", "sheep" };
     public string[] avatarDisplayNames = { "חתול", "ברווז", "חפרפרת", "כבשה" };
 
-    [Header("UI")]
+    [Header("UI Controls")]
     public TMP_Text nameText;
     public Image[] dotIndicators;
     public Color dotActiveColor = new Color(0.98f, 0.96f, 0.9f, 1f);
@@ -52,11 +40,19 @@ public class AvatarSelectController : MonoBehaviour
     public Button selectButton;
 
     private int currentIndex;
-    private bool wasScreenActive;
     private bool transitioning;
 
-    void Start()
+    private void Awake()
     {
+        // Cache our own CanvasGroup component attached to this GameObject
+        myCanvasGroup = GetComponent<CanvasGroup>();
+        
+        // Setup Button Listeners once
+        if (prevButton != null) prevButton.onClick.AddListener(Prev);
+        if (nextButton != null) nextButton.onClick.AddListener(Next);
+        if (selectButton != null) selectButton.onClick.AddListener(Select);
+
+        // Build mapping from catalog
         if (catalog != null && catalog.entries != null && catalog.entries.Length > 0)
         {
             avatarIds = new string[catalog.entries.Length];
@@ -67,49 +63,42 @@ public class AvatarSelectController : MonoBehaviour
                 avatarDisplayNames[i] = catalog.entries[i].displayName;
             }
         }
+    }
 
-        if (avatarSelectScreen != null) avatarSelectScreen.SetActive(true);
-        if (nextScreen != null) nextScreen.SetActive(false);
-
-        if (avatarGroup != null)
+    private void OnEnable()
+    {
+        // SAFETY: If a character is already selected and we aren't deliberately forcing a change,
+        // bypass this screen entirely and forward straight to the Game Selection menu.
+        if (AvatarSession.Instance != null && AvatarSession.Instance.HasSelectedAvatar())
         {
-            avatarGroup.alpha = 0f;
-            avatarGroup.interactable = false;
-            avatarGroup.blocksRaycasts = true;
+            Debug.Log($"[AvatarSelect] Already has Avatar, cross-fading to Game Selection Screen.");
+            if (selectGameScreen != null) selectGameScreen.SetActive(true);
+            gameObject.SetActive(false);
+            return;
         }
 
-        if (stageCamera != null) stageCamera.enabled = false;
-
-        if (prevButton != null) prevButton.onClick.AddListener(Prev);
-        if (nextButton != null) nextButton.onClick.AddListener(Next);
-        if (selectButton != null) selectButton.onClick.AddListener(Select);
-
-        RefreshAvatar();
-
-        // avatarSelectScreen starts active (mirrors Welcome/Login) but invisible
-        // behind alpha 0 until the previous screen's cross-fade shows it.
-        wasScreenActive = avatarSelectScreen != null && avatarSelectScreen.activeSelf;
-    }
-
-    void Update()
-    {
-        bool nowActive = avatarSelectScreen != null && avatarSelectScreen.activeSelf;
-        if (nowActive && !wasScreenActive) OnShown();
-        wasScreenActive = nowActive;
-    }
-
-    private void OnShown()
-    {
+        // Reset state upon showing up
         transitioning = false;
         currentIndex = 0;
-        RefreshAvatar();
-        if (stageCamera != null) stageCamera.enabled = true;
-        if (avatarGroup != null)
+        
+        if (myCanvasGroup != null)
         {
-            avatarGroup.interactable = true;
-            avatarGroup.blocksRaycasts = true;
+            myCanvasGroup.alpha = 1f;
+            myCanvasGroup.interactable = true;
+            myCanvasGroup.blocksRaycasts = true;
         }
-        Debug.Log("[AvatarSelect] Shown -> stage camera on, index reset to 0");
+
+        if (stageCamera != null) stageCamera.enabled = true;
+
+        RefreshAvatar();
+        Debug.Log("[AvatarSelect] OnEnable -> Resetting layout and activating stage camera.");
+    }
+
+    private void OnDisable()
+    {
+        // Clean up when screen becomes inactive to save mobile performance
+        if (stageCamera != null) stageCamera.enabled = false;
+        StopAllCoroutines();
     }
 
     public void Next()
@@ -126,7 +115,6 @@ public class AvatarSelectController : MonoBehaviour
         RefreshAvatar();
     }
 
-    /// <summary>Wired to the Select button's OnClick.</summary>
     public void Select()
     {
         if (transitioning || avatarInstances.Length == 0) return;
@@ -138,8 +126,8 @@ public class AvatarSelectController : MonoBehaviour
             AvatarSession.Instance.SetSelectedAvatar(id);
         }
 
-        Debug.Log($"[AvatarSelect] Select -> chose '{id}', cross-fading to next screen");
-        StartCoroutine(CrossFade());
+        Debug.Log($"[AvatarSelect] Confirmed -> chosen '{id}', cross-fading to Game Selection Screen.");
+        StartCoroutine(CrossFadeToGameSelection());
     }
 
     private void RefreshAvatar()
@@ -159,32 +147,33 @@ public class AvatarSelectController : MonoBehaviour
         }
     }
 
-    private IEnumerator CrossFade()
+    private IEnumerator CrossFadeToGameSelection()
     {
-        if (avatarGroup != null)
+        if (myCanvasGroup != null)
         {
-            avatarGroup.interactable = false;
-            avatarGroup.blocksRaycasts = false;
+            myCanvasGroup.interactable = false;
+            myCanvasGroup.blocksRaycasts = false;
         }
 
-        if (nextScreen != null) nextScreen.SetActive(true);
-        if (nextGroup != null) nextGroup.alpha = 0f;
+        if (selectGameScreen != null) selectGameScreen.SetActive(true);
+        if (selectGameGroup != null) selectGameGroup.alpha = 0f;
 
-        float startAlpha = avatarGroup != null ? avatarGroup.alpha : 1f;
         float t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime / Mathf.Max(0.01f, crossFadeDuration);
             float eased = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t));
-            if (avatarGroup != null) avatarGroup.alpha = Mathf.Lerp(startAlpha, 0f, eased);
-            if (nextGroup != null) nextGroup.alpha = eased;
+            
+            if (myCanvasGroup != null) myCanvasGroup.alpha = Mathf.Lerp(1f, 0f, eased);
+            if (selectGameGroup != null) selectGameGroup.alpha = eased;
+            
             yield return null;
         }
 
-        if (nextGroup != null) nextGroup.alpha = 1f;
-        if (stageCamera != null) stageCamera.enabled = false;
-        if (avatarSelectScreen != null) avatarSelectScreen.SetActive(false);
-        Debug.Log("[AvatarSelect] Cross-fade complete -> avatar picker hidden, next screen active");
+        if (selectGameGroup != null) selectGameGroup.alpha = 1f;
+        
+        // Disable ourselves now that we are done!
+        gameObject.SetActive(false);
     }
 
 #if UNITY_EDITOR
