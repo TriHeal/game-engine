@@ -53,6 +53,20 @@ public class WelcomeScreenController : MonoBehaviour
 
     void Start()
     {
+        if (SharedData.DidWelcome)
+        {
+            if (nextScreen != null)
+            {
+                welcomeScreen.SetActive(false);
+                nextScreen.SetActive(true);
+            }
+            return;
+        }
+        else
+        {
+            SharedData.DidWelcome = true;
+        }
+        
         if (welcomeScreen != null) welcomeScreen.SetActive(true);
         if (nextScreen != null) nextScreen.SetActive(false);
         if (ctaButton != null) ctaButton.onClick.AddListener(Continue);

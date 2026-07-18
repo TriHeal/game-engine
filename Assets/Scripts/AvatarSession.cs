@@ -68,6 +68,16 @@ public class AvatarSession : MonoBehaviour
         Debug.Log($"[AvatarSession] Selected avatar set to '{id}'");
     }
 
+    public bool HasSelectedAvatar()
+    {
+        return (PlayerPrefs.GetString(SelectedAvatarKey, string.Empty) != string.Empty);
+    }
+
+    public void ClearSavedAvatar()
+    {
+        PlayerPrefs.SetString(SelectedAvatarKey, string.Empty);
+    }
+
     /// <summary>Spawns a copy of the chosen avatar's prefab (or the catalog's first entry as a fallback). Caller positions/parents it.</summary>
     public GameObject SpawnAvatar(Transform parent = null)
     {

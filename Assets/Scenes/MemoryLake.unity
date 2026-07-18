@@ -747,7 +747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19541630}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.02968181, y: 0.9702006, z: -0.16220342, w: -0.17753825}
+  m_LocalRotation: {x: -0.031789884, y: 0.96780837, z: -0.16180344, w: -0.19014749}
   m_LocalPosition: {x: -59.19, y: 5.841, z: 186.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1264,23 +1264,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 166016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
   m_PrefabInstance: {fileID: 1679821574}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &58999820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 58999817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd57ffa145149b7529e0f290f83aa567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  jumpDuration: 0.8
-  jumpHeight: 2
-  rockLayer:
-    serializedVersion: 2
-    m_Bits: 4096
 --- !u!4 &58999822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
@@ -7736,7 +7719,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693947972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029681804, y: 0.9702006, z: -0.16220339, w: -0.17753825}
+  m_LocalRotation: {x: -0.031789884, y: 0.96780837, z: -0.16180344, w: -0.19014749}
   m_LocalPosition: {x: -59.19, y: 5.841, z: 186.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12103,6 +12086,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2191666470857331508, guid: 8b63f536dcb9512418bb18c53c2565c6, type: 3}
   m_PrefabInstance: {fileID: 1093093732}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1097072425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097072426}
+  - component: {fileID: 1097072427}
+  m_Layer: 0
+  m_Name: SelectedAvatar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097072426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097072425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7617192, z: -0, w: -0.64790726}
+  m_LocalPosition: {x: -52.94, y: -5.159, z: 167.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 58999822}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 260.768, z: 0}
+--- !u!114 &1097072427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097072425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd57ffa145149b7529e0f290f83aa567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  jumpDuration: 0.8
+  jumpHeight: 2
+  rockLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1001 &1103268499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13269,7 +13302,7 @@ GameObject:
   - component: {fileID: 1210440766}
   - component: {fileID: 1210440765}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13341,7 +13374,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1910923636}
         m_TargetAssemblyTypeName: LakeMapManager, Assembly-CSharp
-        m_MethodName: OnClick_ZoomOutToLand
+        m_MethodName: OnClick_Back
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18990,7 +19023,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1097072426}
     m_Modifications:
     - target: {fileID: 166016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_Name
@@ -19010,31 +19043,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -52.94
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 167.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.64790666
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7617198
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -19042,7 +19075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 260.768
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 466016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -19055,10 +19088,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 166016, guid: f657c58adb4c219419ae056411d88e27, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 58999820}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f657c58adb4c219419ae056411d88e27, type: 3}
 --- !u!1001 &1685266578
 PrefabInstance:
@@ -21781,6 +21811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1910923637}
   - component: {fileID: 1910923636}
+  - component: {fileID: 1910923638}
   m_Layer: 0
   m_Name: LakeMapManager
   m_TagString: Untagged
@@ -21800,14 +21831,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894f3c3568305885bbd9cf9a35438cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LakeMapManager
-  duckController: {fileID: 58999820}
+  duckController: {fileID: 1097072427}
   landReturnPoint: {fileID: 2120099488}
   followCam: {fileID: 693947975}
   rockZoomCam: {fileID: 453796193}
   previewTitleUI: {fileID: 1980184625}
   titleText: {fileID: 234421519}
   fullCardInfoUI: {fileID: 10225251}
-  zoomOutButton: {fileID: 1210440763}
+  backButton: {fileID: 0}
   cardUIController: {fileID: 10225255}
 --- !u!4 &1910923637
 Transform:
@@ -21824,6 +21855,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1910923638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910923635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7899d658604d649749f44d008843afad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HomeAvatarDisplay
+  placeholder: {fileID: 58999817}
+  faceCamera: 0
 --- !u!1001 &1913133300
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24918,7 +24963,7 @@ SceneRoots:
   - {fileID: 498771465}
   - {fileID: 1793313450}
   - {fileID: 104600148}
-  - {fileID: 1679821574}
+  - {fileID: 1097072426}
   - {fileID: 693947976}
   - {fileID: 453796196}
   - {fileID: 2120099488}

@@ -16,6 +16,7 @@ public class HomeAvatarDisplay : MonoBehaviour
 {
     [Tooltip("Placeholder avatar prop to replace on first refresh (e.g. the raft's duck instance).")]
     public GameObject placeholder;
+    public bool faceCamera = true;
 
     private Transform anchor;
     private Vector3 anchorLocalPosition;
@@ -29,7 +30,12 @@ public class HomeAvatarDisplay : MonoBehaviour
     {
         if (placeholder != null)
         {
+            Debug.Log("Got placeholder");
             anchor = placeholder.transform.parent;
+            if (anchor == null)
+            {
+                Debug.Log("anchor is null");
+            }
             anchorLocalPosition = placeholder.transform.localPosition;
             anchorLocalRotation = placeholder.transform.localRotation;
             anchorLocalScale = placeholder.transform.localScale;
@@ -53,18 +59,21 @@ public class HomeAvatarDisplay : MonoBehaviour
         newSpawn.transform.SetLocalPositionAndRotation(anchorLocalPosition, anchorLocalRotation);
         newSpawn.transform.localScale = anchorLocalScale;
 
-        // Face the Home screen's camera directly, independent of whatever
-        // rotation the raft itself has. Camera.main's *position* is the same
-        // regardless of which screen's framing is active (only its rotation
-        // changes, via the Cinemachine composer's screen-position offset), so
-        // this stays correct without needing to know about that offset.
-        var mainCam = Camera.main;
-        if (mainCam != null)
+        if (faceCamera)
         {
-            Vector3 toCamera = mainCam.transform.position - newSpawn.transform.position;
-            toCamera.y = 0f;
-            if (toCamera.sqrMagnitude > 0.0001f)
-                newSpawn.transform.rotation = Quaternion.LookRotation(toCamera.normalized, Vector3.up);
+            // Face the Home screen's camera directly, independent of whatever
+            // rotation the raft itself has. Camera.main's *position* is the same
+            // regardless of which screen's framing is active (only its rotation
+            // changes, via the Cinemachine composer's screen-position offset), so
+            // this stays correct without needing to know about that offset.
+            var mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                Vector3 toCamera = mainCam.transform.position - newSpawn.transform.position;
+                toCamera.y = 0f;
+                if (toCamera.sqrMagnitude > 0.0001f)
+                    newSpawn.transform.rotation = Quaternion.LookRotation(toCamera.normalized, Vector3.up);
+            }
         }
 
         // spawnOffset is a mesh-space correction (how far a prefab's root sits
@@ -84,5 +93,7 @@ public class HomeAvatarDisplay : MonoBehaviour
 
         spawned = newSpawn;
         spawnedAvatarId = id;
+
+        Debug.Log("Avatar loaded");
     }
 }

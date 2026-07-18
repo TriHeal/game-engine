@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/rocksFlow.unity
     guid: 57c3d453e4cf4443d86142ff26e5489b
   - enabled: 1
+    path: Assets/Scenes/SyncRiver.unity
+    guid: 4f5d49049bbba9d80b6306725893d4b8
+  - enabled: 1
     path: Assets/Scenes/MemoryLake.unity
     guid: ad0ac0a01629fb779b9ba3cbe630f0f4
   m_configObjects:

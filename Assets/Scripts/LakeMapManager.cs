@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine; // Unity Cinemachine package
+using UnityEngine.SceneManagement;
 
 public class LakeMapManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class LakeMapManager : MonoBehaviour
     public GameObject previewTitleUI;
     public TMPro.TextMeshProUGUI titleText;
     public GameObject fullCardInfoUI;
-    public GameObject zoomOutButton;
+    public GameObject backButton;
     public FullCardUIController cardUIController;
 
     private JumpRock currentlySelectedRock;
@@ -33,7 +34,7 @@ public class LakeMapManager : MonoBehaviour
         if (rockZoomCam != null) rockZoomCam.Priority = 5;
 
         // Hide UI elements initially
-        if (zoomOutButton != null) zoomOutButton.SetActive(false);
+        if (backButton != null) backButton.SetActive(false);
         if (previewTitleUI != null) previewTitleUI.SetActive(false);
         if (fullCardInfoUI != null) fullCardInfoUI.SetActive(false);
     }
@@ -122,15 +123,21 @@ public class LakeMapManager : MonoBehaviour
             }
 
             // 3. Show zoom out button
-            if (zoomOutButton != null) zoomOutButton.SetActive(true);
+            if (backButton != null) backButton.SetActive(true);
         });
     }
     
     /// <summary>
-    /// UI Event: Attach this function to your "Zoom Out" UI Button OnClick() event
+    /// UI Event: Attach this function to your "Back" UI Button OnClick() event
     /// </summary>
-    public void OnClick_ZoomOutToLand()
+    public void OnClick_Back()
     {
+        // 0. If we are on land and the user pressed Back
+        if (currentlySelectedRock == null)
+        {
+            SceneManager.LoadScene("LowPoly");
+        }
+        
         // 1. Save all typed card data & close the card panel
         if (cardUIController != null && cardUIController.gameObject.activeSelf)
         {
@@ -155,7 +162,7 @@ public class LakeMapManager : MonoBehaviour
             {
                 currentlySelectedRock = null;
                 // Callback executing once returned to shore:
-                if (zoomOutButton != null) zoomOutButton.SetActive(false);
+                if (backButton != null) backButton.SetActive(false);
             });
         }
     }
