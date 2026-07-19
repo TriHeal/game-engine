@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 23978027}
   - component: {fileID: 23978030}
   m_Layer: 5
-  m_Name: Btn_Validation
+  m_Name: Btn_Love
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.84313726, g: 0.7411765, b: 0.34901962, a: 1}
+  m_Color: {r: 0.10196078, g: 0.8554175, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -626,10 +626,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: validation
-  hexColor: '#D7BD59'
-  promptText: "\u05DC\u05EA\u05EA \u05D7\u05D9\u05D6\u05D5\u05E7 \u05D7\u05D9\u05D5\u05D1\u05D9
-    \u05E2\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2"
+  optionId: love
+  hexColor: '#1ADAFF'
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E9\u05D2\u05E8\u05DD
+    \u05DC\u05D0\u05D4\u05D1\u05D4"
 --- !u!4 &24568875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8603736178389046456, guid: c617929266cbabc4aa67a68f0e569b27, type: 3}
@@ -997,7 +997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E4\u05E8\u05D8\u05D9 \u05D4\u05E4\u05E2\u05D9\u05DC\u05D5\u05EA"
+  m_text: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05D4\u05E8\u05D2\u05E9"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -1804,7 +1804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05EA\u05D9\u05E7\u05D5\u05E3"
+  m_text: "\u05D0\u05D4\u05D1\u05D4"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05D1\u05D7\u05E8 \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA"
+  m_text: "\u05D1\u05D7\u05E8 \u05E8\u05D2\u05E9"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -6083,7 +6083,7 @@ GameObject:
   - component: {fileID: 731935323}
   - component: {fileID: 731935326}
   m_Layer: 5
-  m_Name: Btn_EmotionSharing
+  m_Name: Btn_Brave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6166,7 +6166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.60784316, g: 0.50980395, b: 0.78431374, a: 1}
+  m_Color: {r: 1, g: 0.613328, b: 0.0047169924, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6203,10 +6203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: emotion_sharing
-  hexColor: '#9B82C8'
-  promptText: "\u05E9\u05D9\u05EA\u05D5\u05E3 \u05E8\u05D2\u05E9 \u05E9\u05D4\u05D9\u05D4
-    \u05D4\u05D9\u05D5\u05DD"
+  optionId: brave
+  hexColor: '#FF9C01'
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
+    \u05E9\u05DC \u05D0\u05D5\u05DE\u05E5"
 --- !u!1001 &739258440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7993,7 +7993,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E9\u05D9\u05EA\u05D5\u05E3"
+  m_text: "\u05E9\u05DE\u05D7\u05D4"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -8444,7 +8444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E0\u05D0 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA"
+  m_text: "\u05D0\u05D9\u05DA \u05D4\u05E8\u05D2\u05E9\u05EA?"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -8833,7 +8833,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E4\u05D9\u05E8\u05D5\u05E7 \u05D0\u05D9\u05E8\u05D5\u05E2"
+  m_text: "\u05E8\u05D2\u05D5\u05E2"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -8927,7 +8927,7 @@ GameObject:
   - component: {fileID: 919207676}
   - component: {fileID: 919207679}
   m_Layer: 5
-  m_Name: Btn_Coping
+  m_Name: Btn_Fear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9010,7 +9010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.49803922, g: 0.68235296, b: 0.48235294, a: 1}
+  m_Color: {r: 0.4392157, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9047,9 +9047,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: coping
-  hexColor: '#7FAE7B'
-  promptText: "\u05D0\u05D9\u05E8\u05D5\u05E2 \u05E9\u05D3\u05E8\u05E9 \u05D4\u05EA\u05D2\u05D1\u05E8\u05D5\u05EA"
+  optionId: fear
+  hexColor: '#7000FF'
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
+    \u05DE\u05E4\u05D7\u05D9\u05D3"
 --- !u!1001 &928395113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9169,7 +9170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E9\u05D9\u05D7\u05D4 \u05D8\u05D5\u05D1\u05D4"
+  m_text: "\u05E2\u05E6\u05D1"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -9853,7 +9854,7 @@ GameObject:
   - component: {fileID: 952706016}
   - component: {fileID: 952706019}
   m_Layer: 5
-  m_Name: Btn_MomentTogether
+  m_Name: Btn_Confusion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9936,7 +9937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.65882355, g: 0.54901963, b: 0.45490196, a: 1}
+  m_Color: {r: 0.36078432, g: 0.5411765, b: 0.5411765, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9973,10 +9974,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: moment_together
-  hexColor: '#A88C74'
-  promptText: "\u05E8\u05D2\u05E2 \u05E9\u05DC \u05E9\u05E7\u05D8, \u05E7\u05E8\u05D1\u05D4
-    \u05D0\u05D5 \u05D7\u05D9\u05D1\u05D5\u05E7"
+  optionId: confusion
+  hexColor: '#5C8A8A'
+  promptText: "\u05DE\u05E7\u05E8\u05D4 \u05D1\u05D5 \u05D4\u05D9\u05D9\u05EA\u05D4
+    \u05D3\u05D0\u05D2\u05D4"
 --- !u!1001 &956148307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11868,7 +11869,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E8\u05D2\u05E2 \u05D1\u05D9\u05D7\u05D3"
+  m_text: "\u05D3\u05D0\u05D2\u05D4"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -12067,7 +12068,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E9\u05D9\u05EA\u05D5\u05E3 \u05E8\u05D2\u05E9"
+  m_text: "\u05D0\u05D5\u05DE\u05E5"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -12227,7 +12228,7 @@ GameObject:
   - component: {fileID: 1183925714}
   - component: {fileID: 1183925717}
   m_Layer: 5
-  m_Name: Btn_SharedBreathing
+  m_Name: Btn_Anger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12310,7 +12311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.43529412, g: 0.6862745, b: 0.6901961, a: 1}
+  m_Color: {r: 1, g: 0.101960786, b: 0.101960786, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12347,10 +12348,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: shared_breathing
-  hexColor: '#6FAFB0'
-  promptText: "\u05E0\u05D0 \u05DC\u05E2\u05E9\u05D5\u05EA \u05EA\u05E8\u05D2\u05D9\u05DC
-    \u05E0\u05E9\u05D9\u05DE\u05D4 \u05D1\u05D9\u05D7\u05D3"
+  optionId: anger
+  hexColor: '#FF1A1A'
+  promptText: "\u05DE\u05E7\u05E8\u05D4 \u05E9\u05D1\u05D5 \u05D4\u05D9\u05D4 \u05E8\u05D2\u05E9
+    \u05E9\u05DC \u05DB\u05E2\u05E1"
 --- !u!1001 &1189120069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12427,7 +12428,7 @@ GameObject:
   - component: {fileID: 1192319344}
   - component: {fileID: 1192319347}
   m_Layer: 5
-  m_Name: Btn_EventProcessing
+  m_Name: Btn_Calm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12522,7 +12523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8509804, g: 0.6039216, b: 0.35686275, a: 1}
+  m_Color: {r: 0.2793535, g: 1, b: 0.10196078, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12559,10 +12560,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: event_processing
-  hexColor: '#D99A5B'
-  promptText: "\u05E9\u05D1\u05D5 \u05D1\u05D9\u05D7\u05D3 \u05DC\u05D4\u05D1\u05D9\u05DF
-    \u05D0\u05D9\u05E8\u05D5\u05E2 \u05E9\u05E7\u05E8\u05D4"
+  optionId: calm
+  hexColor: '#47FF1A'
+  promptText: "\u05DE\u05E7\u05E8\u05D4 \u05E9\u05D1\u05D5 \u05D4\u05D9\u05D4 \u05E8\u05D2\u05E2
+    \u05E8\u05D2\u05D5\u05E2"
 --- !u!1001 &1196771848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14824,7 +14825,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05D4\u05EA\u05D2\u05D1\u05E8\u05D5\u05EA"
+  m_text: "\u05E4\u05D7\u05D3"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -14851,8 +14852,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -20390,7 +20391,7 @@ GameObject:
   - component: {fileID: 2020862744}
   - component: {fileID: 2020862747}
   m_Layer: 5
-  m_Name: Btn_Sharing
+  m_Name: Btn_Joy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20473,7 +20474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.49803922, g: 0.68235296, b: 0.83137256, a: 1}
+  m_Color: {r: 1, g: 0.8509804, b: 0.2, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20510,10 +20511,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: sharing
-  hexColor: '#7FAED4'
-  promptText: "\u05E9\u05D9\u05EA\u05D5\u05E3 \u05E9\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
-    \u05DB\u05DC\u05E9\u05D4\u05D5"
+  optionId: joy
+  hexColor: '#FFD933'
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
+    \u05E9\u05D2\u05E8\u05DD \u05DC\u05E9\u05DE\u05D7\u05D4"
 --- !u!1001 &2030036540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20900,7 +20901,7 @@ GameObject:
   - component: {fileID: 2065905801}
   - component: {fileID: 2065905804}
   m_Layer: 5
-  m_Name: Btn_GoodConversation
+  m_Name: Btn_Sadness
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20983,7 +20984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7882353, g: 0.5294118, b: 0.47843137, a: 1}
+  m_Color: {r: 0.2688679, g: 0.36635235, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21020,10 +21021,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: good_conversation
-  hexColor: '#C9877A'
-  promptText: "\u05E9\u05D9\u05D7\u05D4 \u05D8\u05D5\u05D1\u05D4 \u05E2\u05DC \u05D4\u05D9\u05D5\u05DD
-    \u05E9\u05D4\u05D9\u05D4"
+  optionId: sadness
+  hexColor: '#455EFF'
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E2\u05E6\u05D5\u05D1
+    \u05E9\u05E7\u05E8\u05D4"
 --- !u!1 &2080176978
 GameObject:
   m_ObjectHideFlags: 0
@@ -21524,7 +21525,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E0\u05E9\u05D9\u05DE\u05D4 \u05DE\u05E9\u05D5\u05EA\u05E4\u05EA"
+  m_text: "\u05DB\u05E2\u05E1"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -21551,8 +21552,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
