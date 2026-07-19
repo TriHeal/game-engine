@@ -74,7 +74,6 @@ public class LakeMapManager : MonoBehaviour
                 // Second Click on same rock: Trigger Jump + Close-up + Full Info
                 else
                 {
-                    HideTitlePreview();
                     TriggerJumpAndPopup(clickedRock);
                 }
             }
@@ -102,6 +101,8 @@ public class LakeMapManager : MonoBehaviour
     {
         currentlySelectedRock = rock;
         lastClickedRock = null;
+
+        HideTitlePreview();
 
         // Command duck to jump to the rock's landing point
         duckController.JumpTo(rock.landingPoint.position, () =>
