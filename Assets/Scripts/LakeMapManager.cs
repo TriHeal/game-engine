@@ -57,12 +57,12 @@ public class LakeMapManager : MonoBehaviour
             JumpRock clickedRock = hit.collider.GetComponent<JumpRock>();
             if (clickedRock == null) return;
 
-            // 1. Rock with 100% Fog -> Direct Jump + Full Info Popup
-            if (clickedRock.fogPercentage >= 100f)
+            // 1. Rock without Title -> Direct Jump + Full Info Popup
+            if (clickedRock.rockTitle == string.Empty)
             {
                 TriggerJumpAndPopup(clickedRock);
             }
-            // 2. Rock with < 100% Fog (Partially or Fully Cleared)
+            // 2. Rock with Title (a.ka < 100% Fog) (Partially or Fully Cleared)
             else
             {
                 // First Click: Display small Title Preview UI

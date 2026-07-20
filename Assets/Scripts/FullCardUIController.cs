@@ -26,11 +26,23 @@ public class FullCardUIController : MonoBehaviour
     [Header("Feelings Configuration")]
     public List<FeelingOption> feelingsList = new List<FeelingOption>()
     {
-        new FeelingOption { feelingName = "בחר הרגשה...", feelingColor = Color.white },
-        new FeelingOption { feelingName = "פחד", feelingColor = new Color(0.6f, 0.3f, 0.8f) },
-        new FeelingOption { feelingName = "שמחה", feelingColor = new Color(1f, 0.85f, 0.2f) },
-        new FeelingOption { feelingName = "כעס", feelingColor = new Color(0.9f, 0.3f, 0.3f) },
-        new FeelingOption { feelingName = "עצב", feelingColor = new Color(0.3f, 0.3f, 0.9f) }
+        new FeelingOption { feelingName = "בחר רגש...", feelingColor = Color.white },
+        
+        // Original Emotions
+        new FeelingOption { feelingName = "שמחה", feelingColor = new Color(1.0f, 0.85f, 0.2f) },   // Golden Yellow
+        new FeelingOption { feelingName = "פחד", feelingColor = new Color(0.6f, 0.3f, 0.8f) },     // Violet
+        new FeelingOption { feelingName = "כעס", feelingColor = new Color(0.9f, 0.3f, 0.3f) },     // Red
+        new FeelingOption { feelingName = "עצב", feelingColor = new Color(0.3f, 0.3f, 0.9f) },     // Blue
+        
+        // New Additions
+        new FeelingOption { feelingName = "בושה", feelingColor = new Color(0.44f, 0.07f, 0.21f) },  // Deep Plum
+        new FeelingOption { feelingName = "אשמה", feelingColor = new Color(0.40f, 0.33f, 0.23f) },  // Mud Brown
+        new FeelingOption { feelingName = "חוסר אונים", feelingColor = new Color(0.44f, 0.50f, 0.56f) }, // Slate Grey
+        new FeelingOption { feelingName = "אימה", feelingColor = new Color(0.10f, 0.07f, 0.15f) },  // Near-Black Ink
+        new FeelingOption { feelingName = "בהלה", feelingColor = new Color(1.0f, 0.33f, 0.0f) },   // Electric Orange
+        new FeelingOption { feelingName = "חשק", feelingColor = new Color(0.90f, 0.0f, 0.48f) },   // Bright Magenta
+        new FeelingOption { feelingName = "ציפייה", feelingColor = new Color(1.0f, 0.60f, 0.0f) }, // Warm Amber
+        new FeelingOption { feelingName = "הקלה", feelingColor = new Color(0.31f, 0.89f, 0.65f) }   // Soft Mint
     };
 
     private JumpRock currentRock;
