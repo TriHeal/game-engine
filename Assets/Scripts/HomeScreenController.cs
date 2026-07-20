@@ -30,7 +30,7 @@ public class HomeScreenController : MonoBehaviour
     /// <summary>Wired to the Stone Breaking Game button.</summary>
     public void OpenStoneBreak()
     {
-        SceneManager.LoadScene("rocksFlow");
+        SceneManager.LoadScene("StoneFlow");
     }
 
     /// <summary>Wired to the Memory Lake Game button.</summary>

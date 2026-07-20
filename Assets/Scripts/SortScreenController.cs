@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -16,16 +17,22 @@ public class SortScreenController : MonoBehaviour
     public EDISortableBubble bubblePrefab;
     public RectTransform spawnRow;
 
+    [Header("Header (original engraved text)")]
+    public TextMeshProUGUI headerText;
+
     [Header("Events")]
     public UnityEvent OnSortComplete;
 
     private readonly List<EDISortableBubble> bubbles = new List<EDISortableBubble>();
     private int correctCount;
 
-    public void Show(List<(string text, EDISortableBubble.Category category)> options)
+    public void Show(string headerLabel, List<(string text, EDISortableBubble.Category category)> options)
     {
         gameObject.SetActive(true);
         Clear();
+
+        if (headerText != null)
+            headerText.text = headerLabel;
 
         correctCount = 0;
 
