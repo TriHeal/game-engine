@@ -628,8 +628,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: validation
   hexColor: '#D7BD59'
-  promptText: "\u05DC\u05EA\u05EA \u05D7\u05D9\u05D6\u05D5\u05E7 \u05D7\u05D9\u05D5\u05D1\u05D9
-    \u05E2\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2"
+  promptText: "\u05EA\u05DF/\u05D9 \u05D7\u05D9\u05D6\u05D5\u05E7 \u05D7\u05D9\u05D5\u05D1\u05D9
+    \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E9\u05E7\u05E8\u05D4 \u05D4\u05D9\u05D5\u05DD"
 --- !u!4 &24568875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8603736178389046456, guid: c617929266cbabc4aa67a68f0e569b27, type: 3}
@@ -1024,8 +1024,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05D1\u05D7\u05E8 \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA"
+  m_text: "\u05D1\u05D7\u05E8\u05D5 \u05E8\u05D2\u05E2 \u05DE\u05D7\u05D1\u05E8"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -2277,8 +2277,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6205,7 +6205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: emotion_sharing
   hexColor: '#9B82C8'
-  promptText: "\u05E9\u05D9\u05EA\u05D5\u05E3 \u05E8\u05D2\u05E9 \u05E9\u05D4\u05D9\u05D4
+  promptText: "\u05D1\u05D9\u05D7\u05E8\u05D5 \u05E8\u05D2\u05E9 \u05E9\u05D7\u05E9\u05EA\u05DD/\u05DF
     \u05D4\u05D9\u05D5\u05DD"
 --- !u!1001 &739258440
 PrefabInstance:
@@ -6571,7 +6571,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1080, y: 1920}
+  m_ReferenceResolution: {x: 600, y: 800}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -6844,7 +6844,7 @@ RectTransform:
   m_GameObject: {fileID: 785349624}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.087456, y: 3.087456, z: 3.087456}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1679228865}
@@ -6852,8 +6852,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -80}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 43, y: -40.3}
+  m_SizeDelta: {x: 77, y: 77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &785349626
 MonoBehaviour:
@@ -6931,7 +6931,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dac89122b14c9fb4d986fd2e2e7d829d, type: 3}
+  m_Sprite: {fileID: 525625492, guid: 917b62a0c0e7bdc4a8669116f5c98233, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8444,7 +8444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E0\u05D0 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05E4\u05E2\u05D9\u05DC\u05D5\u05EA"
+  m_text: "\u05D1\u05D7\u05E8\u05D5 \u05D0\u05EA \u05D4\u05E8\u05D2\u05E2"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -9049,7 +9049,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: coping
   hexColor: '#7FAE7B'
-  promptText: "\u05D0\u05D9\u05E8\u05D5\u05E2 \u05E9\u05D3\u05E8\u05E9 \u05D4\u05EA\u05D2\u05D1\u05E8\u05D5\u05EA"
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05DE\u05E7\u05E8\u05D4 \u05E9\u05D3\u05E8\u05E9
+    \u05DE\u05DB\u05DD/\u05DF \u05D4\u05EA\u05D2\u05D1\u05E8\u05D5\u05EA"
 --- !u!1001 &928395113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9169,7 +9170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05E9\u05D9\u05D7\u05D4 \u05D8\u05D5\u05D1\u05D4"
+  m_text: "\u05D6\u05D9\u05DB\u05E8\u05D5\u05DF \u05D8\u05D5\u05D1"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -9637,9 +9638,9 @@ MonoBehaviour:
         z: 4.9191394
       Rotation:
         value:
-          x: -0.005850423
+          x: -0.005850422
           y: 0.8552677
-          z: -0.02827715
+          z: -0.028277153
           w: 0.51738125
     - Position:
         x: -8.342453
@@ -9975,8 +9976,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: moment_together
   hexColor: '#A88C74'
-  promptText: "\u05E8\u05D2\u05E2 \u05E9\u05DC \u05E9\u05E7\u05D8, \u05E7\u05E8\u05D1\u05D4
-    \u05D0\u05D5 \u05D7\u05D9\u05D1\u05D5\u05E7"
+  promptText: "\u05D0\u05DD \u05DE\u05EA\u05D0\u05D9\u05DD \u05DC\u05DB\u05DD/\u05DF
+    \u05D1\u05E7\u05E9\u05D5 \u05D7\u05D9\u05D1\u05D5\u05E7"
 --- !u!1001 &956148307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12349,8 +12350,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: shared_breathing
   hexColor: '#6FAFB0'
-  promptText: "\u05E0\u05D0 \u05DC\u05E2\u05E9\u05D5\u05EA \u05EA\u05E8\u05D2\u05D9\u05DC
-    \u05E0\u05E9\u05D9\u05DE\u05D4 \u05D1\u05D9\u05D7\u05D3"
+  promptText: "\u05E7\u05D7\u05D5 \u05D3\u05E7\u05D4 \u05DC\u05EA\u05E8\u05D2\u05DC
+    \u05D1\u05D9\u05D7\u05D3 \u05E0\u05E9\u05D9\u05DE\u05D4"
 --- !u!1001 &1189120069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12561,8 +12562,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: event_processing
   hexColor: '#D99A5B'
-  promptText: "\u05E9\u05D1\u05D5 \u05D1\u05D9\u05D7\u05D3 \u05DC\u05D4\u05D1\u05D9\u05DF
-    \u05D0\u05D9\u05E8\u05D5\u05E2 \u05E9\u05E7\u05E8\u05D4"
+  promptText: "\u05E0\u05E1\u05D5 \u05DC\u05D4\u05D1\u05D9\u05DF \u05D1\u05D9\u05D7\u05D3
+    \u05DE\u05E9\u05D4\u05D5 \u05E9\u05E7\u05E8\u05D4 \u05D4\u05D9\u05D5\u05DD"
 --- !u!1001 &1196771848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16708,7 +16709,7 @@ RectTransform:
   m_GameObject: {fileID: 1651773385}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.087456, y: 3.087456, z: 3.087456}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 174321307}
@@ -16716,7 +16717,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -300, y: -80}
+  m_AnchoredPosition: {x: -99.8, y: -32.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1651773387
@@ -17189,7 +17190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05D7\u05D6\u05E8\u05D4"
+  m_text: 
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
   m_sharedMaterial: {fileID: 7361824187747913819, guid: c2db5322487c7490baf9928770e3a8f5, type: 2}
@@ -20512,8 +20513,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
   optionId: sharing
   hexColor: '#7FAED4'
-  promptText: "\u05E9\u05D9\u05EA\u05D5\u05E3 \u05E9\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
-    \u05DB\u05DC\u05E9\u05D4\u05D5"
+  promptText: "\u05E1\u05E4\u05E8\u05D5 \u05E2\u05DC \u05DE\u05E9\u05D4\u05D5 \u05E9\u05E7\u05E8\u05D4
+    \u05DC\u05DB\u05DD/\u05DF \u05D4\u05D9\u05D5\u05DD"
 --- !u!1001 &2030036540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20900,7 +20901,7 @@ GameObject:
   - component: {fileID: 2065905801}
   - component: {fileID: 2065905804}
   m_Layer: 5
-  m_Name: Btn_GoodConversation
+  m_Name: Btn_GoodMemory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21020,10 +21021,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5db397276ffea7842ac699732b6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionButtonData
-  optionId: good_conversation
+  optionId: good_memory
   hexColor: '#C9877A'
-  promptText: "\u05E9\u05D9\u05D7\u05D4 \u05D8\u05D5\u05D1\u05D4 \u05E2\u05DC \u05D4\u05D9\u05D5\u05DD
-    \u05E9\u05D4\u05D9\u05D4"
+  promptText: "\u05D4\u05D9\u05D6\u05DB\u05E8\u05D5 \u05D1\u05E8\u05D2\u05E2 \u05DE\u05E9\u05D5\u05EA\u05E3
+    \u05D5\u05D8\u05D5\u05D1"
 --- !u!1 &2080176978
 GameObject:
   m_ObjectHideFlags: 0
