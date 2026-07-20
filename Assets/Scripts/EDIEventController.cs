@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 
 /// <summary>
 /// Owns one EDI ("Emotional Debugging") rock event: cracking the rock open
@@ -40,15 +41,30 @@ public class EDIEventController : MonoBehaviour
 
     [Header("Engraved Rock Text")]
     public GameObject engravedRockText;
+    public GameObject engravedRockPanel;
 
     [Header("Step 3")]
     public SortScreenController sortScreen;
     public float delayBeforeSort = 1.5f;
 
+    [Header("Step 4: Clear the Path")]
+    public SplineAnimate raftSplineAnimate;
+    public float crackAnchorGrowScale = 6f;
+    public float pushApartDistance = 4f;
+    public float clearPathDuration = 1.5f;
+    public float baselineSpeed = 0.5f;
+
     [Header("UI")]
     public GameObject separateButton;
 
     private bool started;
+    private string cachedOriginalText;
+
+    void Start()
+    {
+        if (sortScreen != null)
+            sortScreen.OnSortComplete.AddListener(OnSortingComplete);
+    }
 
     public void Separate()
     {
@@ -72,7 +88,15 @@ public class EDIEventController : MonoBehaviour
     private IEnumerator SeparateHalves()
     {
         if (engravedRockText != null)
+        {
+            // Save the engraved text itself (not a hardcoded copy of it) before
+            // hiding it, so the bubbles/sort screen show exactly what's on the rock.
+            TMPro.TextMeshPro tmp = engravedRockText.GetComponent<TMPro.TextMeshPro>();
+            cachedOriginalText = tmp != null ? tmp.text : originalText;
+            
             engravedRockText.SetActive(false);
+            engravedRockPanel.SetActive(false);
+        }
 
         Vector3 leftStart = halfRockLeft.localPosition;
         Vector3 rightStart = halfRockRight.localPosition;
@@ -98,25 +122,23 @@ public class EDIEventController : MonoBehaviour
 
         List<(string text, EDISortableBubble.Category category)> shuffled = BuildShuffledOptions();
 
-        // Top bubble: original text, styled as a title using the wood-panel UI
-        EDIBubble top = Instantiate(titleBubblePrefab != null ? titleBubblePrefab : bubblePrefab, crackAnchor.parent);
-        top.transform.position = crackAnchor.position;
-        Vector3 topTarget = crackAnchor.localPosition + Vector3.up * topBubbleHeight;
-        top.Setup(originalText, crackAnchor.localPosition, topTarget, bubbleFinalScale);
+        // Top bubble: original text, styled as a title using the wood-panel UI.
+        // Tracked so OpenSortScreen() can clear it too — it's redundant once the
+        // sort screen's header shows the same text.
+        // EDIBubble top = Instantiate(titleBubblePrefab != null ? titleBubblePrefab : bubblePrefab, crackAnchor.parent);
+        // top.transform.position = crackAnchor.position;
+        // Vector3 topTarget = crackAnchor.localPosition + Vector3.up * topBubbleHeight;
+        // top.Setup(cachedOriginalText, crackAnchor.localPosition, topTarget, bubbleFinalScale);
+        // worldTitleBubble = top;
 
-        // Bottom row: 4 shuffled options
-        float startX = -bottomBubbleSpacing * 1.5f;
-        for (int i = 0; i < shuffled.Count; i++)
-        {
-            EDIBubble bubble = Instantiate(bubblePrefab, crackAnchor.parent);
-            Vector3 target = crackAnchor.localPosition + new Vector3(startX + i * bottomBubbleSpacing, -0.3f, 0f);
-            bubble.Setup(shuffled[i].text, crackAnchor.localPosition, target, bubbleFinalScale);
-        }
-
+        // The fact/thought options themselves are never shown in world space —
+        // they go straight to the sort screen's SpawnRow, so the player never
+        // sees a redundant preview before dragging them.
         pendingOptions = shuffled;
     }
 
     private List<(string text, EDISortableBubble.Category category)> pendingOptions;
+    // private EDIBubble worldTitleBubble;
 
     private List<(string text, EDISortableBubble.Category category)> BuildShuffledOptions()
     {
@@ -139,6 +161,62 @@ public class EDIEventController : MonoBehaviour
     private void OpenSortScreen()
     {
         if (sortScreen == null || pendingOptions == null) return;
-        sortScreen.Show(pendingOptions);
+
+        // if (worldTitleBubble != null)
+        // {
+        //     Destroy(worldTitleBubble.gameObject);
+        //     worldTitleBubble = null;
+        // }
+
+        // The engraved text + its backdrop panel move to the canvas too, as
+        // the sort screen's header.
+        if (engravedRockText != null)
+            engravedRockText.SetActive(false);
+        if (engravedRockPanel != null)
+            engravedRockPanel.SetActive(false);
+
+        sortScreen.Show(cachedOriginalText, pendingOptions);
+    }
+
+    private void OnSortingComplete()
+    {
+        if (sortScreen != null)
+            sortScreen.gameObject.SetActive(false);
+
+        StartCoroutine(ClearPath());
+    }
+
+    private IEnumerator ClearPath()
+    {
+        Vector3 anchorStartScale = crackAnchor.localScale;
+        Vector3 anchorTargetScale = anchorStartScale * crackAnchorGrowScale;
+
+        Vector3 leftStart = halfRockLeft.localPosition;
+        Vector3 rightStart = halfRockRight.localPosition;
+        Vector3 apart = (rightStart - leftStart).normalized * pushApartDistance;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / clearPathDuration;
+            float eased = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t));
+
+            crackAnchor.localScale = Vector3.LerpUnclamped(anchorStartScale, anchorTargetScale, eased);
+            halfRockLeft.localPosition = leftStart - apart * eased;
+            halfRockRight.localPosition = rightStart + apart * eased;
+
+            yield return null;
+        }
+
+        // // Path is clear: let the raft resume its journey down the river.
+        if (raftSplineAnimate != null)
+        {
+            raftSplineAnimate.enabled = true;
+            raftSplineAnimate.MaxSpeed = baselineSpeed;
+            raftSplineAnimate.NormalizedTime = 0f;
+            raftSplineAnimate.ElapsedTime = 0f;
+            
+            raftSplineAnimate.Play();
+        }
     }
 }
