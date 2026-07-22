@@ -3980,6 +3980,7 @@ GameObject:
   - component: {fileID: 350675336}
   - component: {fileID: 350675338}
   - component: {fileID: 350675337}
+  - component: {fileID: 350675339}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -4035,8 +4036,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4281146880
+  m_fontColor: {r: 0, g: 0.11764706, b: 0.1764706, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4106,6 +4107,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350675335}
   m_CullTransparentMesh: 1
+--- !u!114 &350675339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350675335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 3
 --- !u!4 &352821564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1190995455649073363, guid: fa9b3057ee026bb41a40d9f7eabfef7c, type: 3}
@@ -8515,6 +8530,7 @@ GameObject:
   - component: {fileID: 896187934}
   - component: {fileID: 896187936}
   - component: {fileID: 896187935}
+  - component: {fileID: 896187937}
   m_Layer: 0
   m_Name: HeaderPanel
   m_TagString: Untagged
@@ -8555,14 +8571,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.96, b: 0.82, a: 1}
+  m_Color: {r: 0.8509804, g: 0.91764706, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0c8c57ca7703648e4a7e37e03d4a5f29, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2a5b0021b179e405fa970ab5430852ba, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8580,6 +8596,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 896187933}
   m_CullTransparentMesh: 1
+--- !u!114 &896187937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896187933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 12
 --- !u!1001 &899342971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8782,6 +8812,7 @@ GameObject:
   - component: {fileID: 911224724}
   - component: {fileID: 911224723}
   - component: {fileID: 911224722}
+  - component: {fileID: 911224725}
   m_Layer: 0
   m_Name: SeparateButton
   m_TagString: Untagged
@@ -8878,7 +8909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.60784316, g: 0.77254903, b: 0.8156863, a: 1}
+  m_Color: {r: 0.11372549, g: 0.42352942, b: 0.16470589, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8903,6 +8934,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911224720}
   m_CullTransparentMesh: 1
+--- !u!114 &911224725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911224720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 4
 --- !u!1001 &913456943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16140,6 +16185,7 @@ GameObject:
   - component: {fileID: 1545499783}
   - component: {fileID: 1545499782}
   - component: {fileID: 1545499784}
+  - component: {fileID: 1545499785}
   m_Layer: 0
   m_Name: FactZone
   m_TagString: Untagged
@@ -16181,15 +16227,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.96, b: 0.82, a: 1}
+  m_Color: {r: 1, g: 0.8784314, b: 0.53333336, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -712659531, guid: ba9d2a0c0a82a9f4ab27a9849aea6433, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 2a5b0021b179e405fa970ab5430852ba, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -16220,6 +16266,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EDISortDropZone
   acceptedCategory: 0
   slotsContainer: {fileID: 1129243505}
+--- !u!114 &1545499785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545499780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 8
 --- !u!1001 &1549605558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16418,6 +16478,7 @@ GameObject:
   - component: {fileID: 1573197053}
   - component: {fileID: 1573197052}
   - component: {fileID: 1573197051}
+  - component: {fileID: 1573197054}
   m_Layer: 5
   m_Name: BackBtn
   m_TagString: Untagged
@@ -16514,7 +16575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.39607844, b: 0.54901963, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -16539,6 +16600,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573197049}
   m_CullTransparentMesh: 1
+--- !u!114 &1573197054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573197049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 0
 --- !u!1001 &1581168692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19185,6 +19260,7 @@ GameObject:
   - component: {fileID: 1849517860}
   - component: {fileID: 1849517859}
   - component: {fileID: 1849517858}
+  - component: {fileID: 1849517861}
   m_Layer: 0
   m_Name: HeaderText
   m_TagString: Untagged
@@ -19222,7 +19298,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 0.03529412, g: 0.11372549, b: 0.18039216, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19311,6 +19387,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -40, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1849517861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849517857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 11
 --- !u!1001 &1849887306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20246,6 +20336,7 @@ GameObject:
   - component: {fileID: 1917908068}
   - component: {fileID: 1917908070}
   - component: {fileID: 1917908069}
+  - component: {fileID: 1917908071}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -20301,8 +20392,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20372,6 +20463,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917908067}
   m_CullTransparentMesh: 1
+--- !u!114 &1917908071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917908067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 1
 --- !u!1001 &1923192460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20582,6 +20687,7 @@ GameObject:
   - component: {fileID: 1951760072}
   - component: {fileID: 1951760071}
   - component: {fileID: 1951760073}
+  - component: {fileID: 1951760074}
   m_Layer: 0
   m_Name: ThoughtZone
   m_TagString: Untagged
@@ -20623,15 +20729,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.82, g: 0.9, b: 1, a: 1}
+  m_Color: {r: 0.77254903, g: 0.90588236, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -712659531, guid: ba9d2a0c0a82a9f4ab27a9849aea6433, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 2a5b0021b179e405fa970ab5430852ba, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -20662,6 +20768,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EDISortDropZone
   acceptedCategory: 1
   slotsContainer: {fileID: 458554944}
+--- !u!114 &1951760074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951760069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 2
 --- !u!1001 &1964088800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21573,6 +21693,7 @@ GameObject:
   - component: {fileID: 2049134097}
   - component: {fileID: 2049134099}
   - component: {fileID: 2049134098}
+  - component: {fileID: 2049134100}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -21628,8 +21749,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21699,6 +21820,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049134096}
   m_CullTransparentMesh: 1
+--- !u!114 &2049134100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049134096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 5
 --- !u!1001 &2054576770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22820,6 +22955,7 @@ GameObject:
   - component: {fileID: 2144819233}
   - component: {fileID: 2144819235}
   - component: {fileID: 2144819234}
+  - component: {fileID: 2144819236}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -22875,8 +23011,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4278196772
+  m_fontColor: {r: 0.14117648, g: 0.101960786, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22946,6 +23082,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144819232}
   m_CullTransparentMesh: 1
+--- !u!114 &2144819236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144819232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf71e1cf51dc4d968dbf81bca930c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThemedGraphic
+  theme: {fileID: 11400000, guid: fc7ffad40121d434dbfc94c4020fe400, type: 2}
+  role: 9
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
