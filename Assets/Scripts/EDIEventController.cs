@@ -53,10 +53,13 @@ public class EDIEventController : MonoBehaviour
     public float pushApartDistance = 4f;
     public float clearPathDuration = 1.5f;
     public float baselineSpeed = 0.5f;
-    public GameObject wellDoneScreen;
 
     [Header("UI")]
     public GameObject separateButton;
+
+    [Header("Well Done Card")]
+    [Tooltip("Root of the WellDoneCard/BackBtn canvas, shown only while the path is being cleared.")]
+    public GameObject wellDoneUI;
 
     private bool started;
     private string cachedOriginalText;
@@ -189,6 +192,11 @@ public class EDIEventController : MonoBehaviour
 
     private IEnumerator ClearPath()
     {
+        if (wellDoneUI != null)
+            wellDoneUI.SetActive(true);
+
+        yield return new WaitForSeconds(delayBeforeSort);
+
         Vector3 anchorStartScale = crackAnchor.localScale;
         Vector3 anchorTargetScale = anchorStartScale * crackAnchorGrowScale;
 
@@ -209,10 +217,6 @@ public class EDIEventController : MonoBehaviour
             yield return null;
         }
 
-        
-        if (wellDoneScreen != null)
-            wellDoneScreen.SetActive(true);
-
         // // Path is clear: let the raft resume its journey down the river.
         if (raftSplineAnimate != null)
         {
@@ -223,5 +227,8 @@ public class EDIEventController : MonoBehaviour
             
             raftSplineAnimate.Play();
         }
+
+        if (wellDoneUI != null)
+            wellDoneUI.SetActive(false);
     }
 }
