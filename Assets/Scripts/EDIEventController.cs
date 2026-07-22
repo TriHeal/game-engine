@@ -53,6 +53,7 @@ public class EDIEventController : MonoBehaviour
     public float pushApartDistance = 4f;
     public float clearPathDuration = 1.5f;
     public float baselineSpeed = 0.5f;
+    public GameObject wellDoneScreen;
 
     [Header("UI")]
     public GameObject separateButton;
@@ -207,6 +208,10 @@ public class EDIEventController : MonoBehaviour
 
             yield return null;
         }
+
+        
+        if (wellDoneScreen != null)
+            wellDoneScreen.SetActive(true);
 
         // // Path is clear: let the raft resume its journey down the river.
         if (raftSplineAnimate != null)
