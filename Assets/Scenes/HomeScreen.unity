@@ -30227,11 +30227,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4450724428456891246, guid: 1a98c09e71e5b4d858910a7bb0b9fa67, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000024319
+      value: 0.000078297
       objectReference: {fileID: 0}
     - target: {fileID: 4450724428456891246, guid: 1a98c09e71e5b4d858910a7bb0b9fa67, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 31.585
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: 4511414821794638149, guid: 1a98c09e71e5b4d858910a7bb0b9fa67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
