@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="firebase_database_url" translatable="false">https://tri-heal-dev-d9484-default-rtdb.europe-west1.firebasedatabase.app</string>
+  <string name="gcm_defaultSenderId" translatable="false">935486565850</string>
+  <string name="google_storage_bucket" translatable="false">tri-heal-dev-d9484.firebasestorage.app</string>
+  <string name="project_id" translatable="false">tri-heal-dev-d9484</string>
+  <string name="google_api_key" translatable="false">AIzaSyC98MsQ5uCg5kwPViWOHHGFSCVlTSlqDrw</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC98MsQ5uCg5kwPViWOHHGFSCVlTSlqDrw</string>
+  <string name="google_app_id" translatable="false">1:935486565850:android:eb76337c902219b63164e3</string>
+</resources>
