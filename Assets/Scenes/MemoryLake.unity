@@ -693,6 +693,7 @@ GameObject:
   - component: {fileID: 19541634}
   - component: {fileID: 19541636}
   - component: {fileID: 19541637}
+  - component: {fileID: 19541638}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -707,7 +708,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19541630}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &19541632
 Camera:
   m_ObjectHideFlags: 0
@@ -767,7 +768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19541630}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029254137, y: 0.9706652, z: -0.16228111, w: -0.17498018}
+  m_LocalRotation: {x: -0.02735907, y: 0.97264045, z: -0.16261128, w: -0.16364509}
   m_LocalPosition: {x: -59.19, y: 5.841, z: 186.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -927,6 +928,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &19541638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19541630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a09af5bf2dad1ad5aa6fd643a33bfc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnableCameraDepth
 --- !u!1001 &35521307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8424,7 +8437,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693947972}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029254135, y: 0.9706653, z: -0.16228108, w: -0.17498018}
+  m_LocalRotation: {x: -0.02735907, y: 0.9726404, z: -0.16261129, w: -0.1636451}
   m_LocalPosition: {x: -59.19, y: 5.841, z: 186.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
