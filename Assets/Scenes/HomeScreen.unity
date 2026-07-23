@@ -20394,7 +20394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomeCameraFraming
   composer: {fileID: 2143399675}
-  homeScreenPosition: {x: -0.3, y: 0.3}
+  homeScreenPosition: {x: 0, y: 0}
   defaultScreenPosition: {x: 0, y: 0}
 --- !u!114 &1411622820
 MonoBehaviour:
