@@ -1327,10 +1327,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 646181321}
-  - {fileID: 1431092263}
   - {fileID: 1239661404}
-  - {fileID: 1090647560}
-  - {fileID: 532704889}
+  - {fileID: 1431092263}
   - {fileID: 885060852}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5432,17 +5430,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532704888}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 108731527}
+  m_Father: {fileID: 646181321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -208, y: 412}
-  m_SizeDelta: {x: 320, y: 90}
+  m_AnchoredPosition: {x: -59, y: 30.215027}
+  m_SizeDelta: {x: 207.0724, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &532704890
 MonoBehaviour:
@@ -6527,7 +6525,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1090647560}
+  - {fileID: 532704889}
   m_Father: {fileID: 108731527}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -11032,17 +11032,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090647559}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 108731527}
+  m_Father: {fileID: 646181321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -271, y: 413}
-  m_SizeDelta: {x: 300, y: 150}
+  m_AnchoredPosition: {x: -147.22385, y: 30.215027}
+  m_SizeDelta: {x: 174.4089, y: 123.5597}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1090647561
 MonoBehaviour:
