@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/HomeScreen.unity
     guid: e7efa71cfb31f002b94d02190481a6d7
   - enabled: 1
-    path: Assets/Scenes/Demo.unity
-    guid: 1bf16276846dc4bd296b8514ea11a728
-  - enabled: 1
     path: Assets/Scenes/StoneFlow.unity
     guid: e411b9de4964d4ef2be5be5934935487
   - enabled: 1
