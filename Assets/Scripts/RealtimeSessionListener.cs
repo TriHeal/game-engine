@@ -1,8 +1,16 @@
+#if UNITY_EDITOR || UNITY_STANDALONE_OSX
+#define TRIHEAL_FIREBASE_REST
+#endif
+
 using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.Networking;
+
+#if !TRIHEAL_FIREBASE_REST
 using Firebase.Auth;
 using Firebase.Database;
-using UnityEngine;
+#endif
 
 [Serializable]
 public class RocksBreakFlowDetails
@@ -29,39 +37,75 @@ public class RealtimeSessionListener : MonoBehaviour
 
     public static event Action ActivityChanged;
 
-    public static string ActiveActivityId { get; private set; }
-    public static string ActiveActivityType { get; private set; }
-
-    public static LiveActivity CurrentActivity { get; private set; }
-
-    public static RocksBreakFlowDetails CurrentRocksDetails =>
-        CurrentActivity?.details;
-
-    private DatabaseReference currentActivityReference;
-
-    public static bool IsActivityActive(string activityType)
+    public static string ActiveActivityId
     {
-        return !string.IsNullOrEmpty(activityType) &&
-               ActiveActivityType == activityType;
+        get;
+        private set;
     }
 
-    private static void SetActiveActivity(LiveActivity activity)
+    public static string ActiveActivityType
+    {
+        get;
+        private set;
+    }
+
+    public static LiveActivity CurrentActivity
+    {
+        get;
+        private set;
+    }
+
+    public static RocksBreakFlowDetails
+        CurrentRocksDetails =>
+            CurrentActivity?.details;
+
+#if !TRIHEAL_FIREBASE_REST
+    private DatabaseReference
+        currentActivityReference;
+#endif
+
+    private Coroutine restPollingCoroutine;
+    private string lastActivityJson;
+    private string lastRestError;
+
+    public static bool IsActivityActive(
+        string activityType
+    )
+    {
+        return
+            !string.IsNullOrEmpty(activityType) &&
+            ActiveActivityType == activityType;
+    }
+
+    private static void SetActiveActivity(
+        LiveActivity activity
+    )
     {
         bool isActive =
             activity != null &&
             activity.status == "active";
 
-        CurrentActivity = isActive ? activity : null;
-        ActiveActivityId = isActive ? activity.id : null;
-        ActiveActivityType = isActive ? activity.activityType : null;
+        CurrentActivity =
+            isActive ? activity : null;
+
+        ActiveActivityId =
+            isActive ? activity.id : null;
+
+        ActiveActivityType =
+            isActive
+                ? activity.activityType
+                : null;
 
         Debug.Log(
             $"[RealtimeSession] Active activity: " +
             $"id={ActiveActivityId ?? "none"}, " +
             $"type={ActiveActivityType ?? "none"}, " +
-            $"title={CurrentActivity?.details?.eventTitle ?? "none"}, " +
-            $"thoughts={CurrentActivity?.details?.thoughts?.Length ?? 0}, " +
-            $"facts={CurrentActivity?.details?.facts?.Length ?? 0}"
+            $"title=" +
+            $"{CurrentActivity?.details?.eventTitle ?? "none"}, " +
+            $"thoughts=" +
+            $"{CurrentActivity?.details?.thoughts?.Length ?? 0}, " +
+            $"facts=" +
+            $"{CurrentActivity?.details?.facts?.Length ?? 0}"
         );
 
         ActivityChanged?.Invoke();
@@ -69,44 +113,69 @@ public class RealtimeSessionListener : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (
+            instance != null &&
+            instance != this
+        )
         {
             Destroy(gameObject);
             return;
         }
 
         instance = this;
+
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        StartCoroutine(WaitForSessionAndStartListening());
+        StartCoroutine(
+            WaitForSessionAndStartListening()
+        );
     }
 
-    private IEnumerator WaitForSessionAndStartListening()
+    private IEnumerator
+        WaitForSessionAndStartListening()
     {
-        Debug.Log("[RealtimeSession] Waiting for session context.");
+        Debug.Log(
+            "[RealtimeSession] Waiting for session context."
+        );
 
         while (!SessionContext.Load())
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSecondsRealtime(
+                0.25f
+            );
         }
 
         Debug.Log(
-            $"[RealtimeSession] Session context found: {SessionContext.Current.sessionId}"
+            "[RealtimeSession] Session context found: " +
+            SessionContext.Current.sessionId
         );
 
+#if TRIHEAL_FIREBASE_REST
+        while (!FirebaseRestSession.Restore())
+        {
+            yield return new WaitForSecondsRealtime(
+                0.25f
+            );
+        }
+
+        StartRestPolling();
+#else
         FirebaseAuth firebaseAuth;
 
         try
         {
-            firebaseAuth = FirebaseAuth.DefaultInstance;
+            firebaseAuth =
+                FirebaseAuth.DefaultInstance;
         }
         catch (Exception exception)
         {
             Debug.LogError(
-                $"[RealtimeSession] Firebase Auth initialization failed: {exception.Message}"
+                "[RealtimeSession] Firebase Auth " +
+                "initialization failed: " +
+                exception.Message
             );
 
             yield break;
@@ -114,32 +183,142 @@ public class RealtimeSessionListener : MonoBehaviour
 
         while (firebaseAuth.CurrentUser == null)
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSecondsRealtime(
+                0.25f
+            );
         }
 
-        StartListening();
+        StartNativeListening();
+#endif
     }
 
-    private void StartListening()
+#if TRIHEAL_FIREBASE_REST
+    private void StartRestPolling()
     {
-        string realtimePath = SessionContext.Current.realtimePath;
+        string realtimePath =
+            SessionContext.Current.realtimePath;
 
         if (string.IsNullOrEmpty(realtimePath))
         {
             Debug.LogWarning(
-                "[RealtimeSession] Session context has no realtimePath."
+                "[RealtimeSession] Session context " +
+                "has no realtimePath."
             );
 
             return;
         }
 
-        currentActivityReference = FirebaseDatabase.DefaultInstance
-            .GetReference($"{realtimePath}/currentActivity");
+        if (restPollingCoroutine != null)
+        {
+            StopCoroutine(restPollingCoroutine);
+        }
 
-        currentActivityReference.ValueChanged += OnCurrentActivityChanged;
+        restPollingCoroutine =
+            StartCoroutine(PollCurrentActivity());
 
         Debug.Log(
-            $"[RealtimeSession] Listening to {realtimePath}/currentActivity"
+            "[RealtimeSession] REST polling started for " +
+            $"{realtimePath}/currentActivity"
+        );
+    }
+
+    private IEnumerator PollCurrentActivity()
+    {
+        while (true)
+        {
+            string realtimePath =
+                SessionContext.Current?.realtimePath;
+
+            string url =
+                FirebaseRestSession
+                    .BuildCurrentActivityUrl(
+                        realtimePath
+                    );
+
+            if (string.IsNullOrEmpty(url))
+            {
+                Debug.LogError(
+                    "[RealtimeSession] Cannot build " +
+                    "RTDB REST URL. Firebase ID " +
+                    "token or realtimePath is missing."
+                );
+
+                yield break;
+            }
+
+            using (
+                UnityWebRequest request =
+                    UnityWebRequest.Get(url)
+            )
+            {
+                request.timeout = 10;
+
+                yield return request.SendWebRequest();
+
+                if (
+                    request.result ==
+                    UnityWebRequest.Result.Success
+                )
+                {
+                    lastRestError = null;
+
+                    ApplyActivityJson(
+                        request.downloadHandler.text
+                    );
+                }
+                else
+                {
+                    string error =
+                        $"HTTP {request.responseCode}: " +
+                        $"{request.error} / " +
+                        $"{request.downloadHandler.text}";
+
+                    if (error != lastRestError)
+                    {
+                        Debug.LogError(
+                            "[RealtimeSession] RTDB REST " +
+                            "read failed: " +
+                            error
+                        );
+
+                        lastRestError = error;
+                    }
+                }
+            }
+
+            yield return new WaitForSecondsRealtime(
+                1f
+            );
+        }
+    }
+#else
+    private void StartNativeListening()
+    {
+        string realtimePath =
+            SessionContext.Current.realtimePath;
+
+        if (string.IsNullOrEmpty(realtimePath))
+        {
+            Debug.LogWarning(
+                "[RealtimeSession] Session context " +
+                "has no realtimePath."
+            );
+
+            return;
+        }
+
+        currentActivityReference =
+            FirebaseDatabase.DefaultInstance
+                .GetReference(
+                    $"{realtimePath}/currentActivity"
+                );
+
+        currentActivityReference.ValueChanged +=
+            OnCurrentActivityChanged;
+
+        Debug.Log(
+            "[RealtimeSession] Native listener started for " +
+            $"{realtimePath}/currentActivity"
         );
     }
 
@@ -151,7 +330,8 @@ public class RealtimeSessionListener : MonoBehaviour
         if (eventArgs.DatabaseError != null)
         {
             Debug.LogError(
-                $"[RealtimeSession] Database error: {eventArgs.DatabaseError.Message}"
+                "[RealtimeSession] Database error: " +
+                eventArgs.DatabaseError.Message
             );
 
             return;
@@ -159,17 +339,45 @@ public class RealtimeSessionListener : MonoBehaviour
 
         if (!eventArgs.Snapshot.Exists)
         {
-            Debug.Log("[RealtimeSession] No active activity.");
+            ApplyActivityJson(null);
+            return;
+        }
+
+        ApplyActivityJson(
+            eventArgs.Snapshot.GetRawJsonValue()
+        );
+    }
+#endif
+
+    private void ApplyActivityJson(
+        string rawJson
+    )
+    {
+        string json =
+            rawJson?.Trim();
+
+        if (
+            string.IsNullOrEmpty(json) ||
+            json == "null"
+        )
+        {
+            if (lastActivityJson == "null")
+            {
+                return;
+            }
+
+            lastActivityJson = "null";
+
+            Debug.Log(
+                "[RealtimeSession] No active activity."
+            );
 
             SetActiveActivity(null);
             return;
         }
 
-        string json = eventArgs.Snapshot.GetRawJsonValue();
-
-        if (string.IsNullOrEmpty(json))
+        if (json == lastActivityJson)
         {
-            SetActiveActivity(null);
             return;
         }
 
@@ -177,19 +385,40 @@ public class RealtimeSessionListener : MonoBehaviour
 
         try
         {
-            activity = JsonUtility.FromJson<LiveActivity>(json);
+            activity =
+                JsonUtility.FromJson<LiveActivity>(
+                    json
+                );
         }
         catch (Exception exception)
         {
             Debug.LogError(
-                $"[RealtimeSession] Failed to parse activity: {exception.Message}"
+                "[RealtimeSession] Failed to parse " +
+                "activity: " +
+                exception.Message +
+                "\nJSON: " +
+                json
             );
 
             return;
         }
 
+        if (activity == null)
+        {
+            Debug.LogError(
+                "[RealtimeSession] Parsed activity was null."
+            );
+
+            return;
+        }
+
+        lastActivityJson = json;
+
         Debug.Log(
-            $"[RealtimeSession] Activity changed: id={activity.id}, type={activity.activityType}, status={activity.status}"
+            $"[RealtimeSession] Activity changed: " +
+            $"id={activity.id}, " +
+            $"type={activity.activityType}, " +
+            $"status={activity.status}"
         );
 
         SetActiveActivity(activity);
@@ -197,11 +426,19 @@ public class RealtimeSessionListener : MonoBehaviour
 
     private void OnDestroy()
     {
+#if TRIHEAL_FIREBASE_REST
+        if (restPollingCoroutine != null)
+        {
+            StopCoroutine(restPollingCoroutine);
+            restPollingCoroutine = null;
+        }
+#else
         if (currentActivityReference != null)
         {
             currentActivityReference.ValueChanged -=
                 OnCurrentActivityChanged;
         }
+#endif
 
         if (instance == this)
         {
