@@ -3,11 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
-/// Step 3 of the EDI flow: a Screen Space - Overlay canvas with two drop zones
-/// ("what really happened" / "what my brain might think"). Spawns the four
-/// shuffled option bubbles and validates each drop against its true category.
+/// Step 3 of the EDI flow: displays the fact/thought sorting screen,
+/// creates draggable bubbles, and validates their destination.
 /// </summary>
 public class SortScreenController : MonoBehaviour
 {
@@ -17,50 +17,160 @@ public class SortScreenController : MonoBehaviour
     public EDISortableBubble bubblePrefab;
     public RectTransform spawnRow;
 
-    [Header("Header (original engraved text)")]
+    [Header("Header")]
     public TextMeshProUGUI headerText;
 
     [Header("Events")]
     public UnityEvent OnSortComplete;
 
-    private readonly List<EDISortableBubble> bubbles = new List<EDISortableBubble>();
+    private readonly List<EDISortableBubble> bubbles =
+        new List<EDISortableBubble>();
+
     private int correctCount;
 
-    public void Show(string headerLabel, List<(string text, EDISortableBubble.Category category)> options)
+    public void Show(
+        string headerLabel,
+        List<(string text, EDISortableBubble.Category category)> options
+    )
     {
         gameObject.SetActive(true);
+
         Clear();
 
         if (headerText != null)
+        {
             headerText.text = headerLabel;
+        }
+
+        if (bubblePrefab == null)
+        {
+            Debug.LogError(
+                "[RocksFlow] SortScreen bubblePrefab is not assigned."
+            );
+            return;
+        }
+
+        if (spawnRow == null)
+        {
+            Debug.LogError(
+                "[RocksFlow] SortScreen spawnRow is not assigned."
+            );
+            return;
+        }
+
+        if (options == null || options.Count == 0)
+        {
+            Debug.LogWarning(
+                "[RocksFlow] SortScreen received no options."
+            );
+            return;
+        }
 
         correctCount = 0;
 
-        float spacing = spawnRow.rect.width / (options.Count + 1);
+        // Ensure the newly enabled canvas has calculated its dimensions.
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(spawnRow);
+
+        // Keep the bubbles above the large fact/thought panels.
+        spawnRow.SetAsLastSibling();
+
+        float rowWidth = spawnRow.rect.width;
+
+        if (rowWidth <= 1f)
+        {
+            Debug.LogWarning(
+                "[RocksFlow] spawnRow width was not calculated; using fallback width."
+            );
+
+            rowWidth = 900f;
+        }
+
+        float spacing = rowWidth / (options.Count + 1);
+
         for (int i = 0; i < options.Count; i++)
         {
-            EDISortableBubble bubble = Instantiate(bubblePrefab, spawnRow);
-            RectTransform r = (RectTransform)bubble.transform;
-            r.anchoredPosition = new Vector2(spacing * (i + 1) - spawnRow.rect.width * 0.5f, 0f);
+            EDISortableBubble bubble =
+                Instantiate(bubblePrefab, spawnRow, false);
 
-            bubble.Setup(options[i].text, options[i].category, this);
+            // An inactive scene template creates inactive clones.
+            bubble.gameObject.SetActive(true);
+
+            RectTransform rect =
+                bubble.GetComponent<RectTransform>();
+
+            if (rect == null)
+            {
+                Debug.LogError(
+                    "[RocksFlow] Bubble prefab has no RectTransform."
+                );
+
+                Destroy(bubble.gameObject);
+                continue;
+            }
+
+            rect.localScale = Vector3.one;
+            rect.localRotation = Quaternion.identity;
+
+            rect.anchoredPosition = new Vector2(
+                spacing * (i + 1) - rowWidth * 0.5f,
+                0f
+            );
+
+            if (bubble.canvasGroup != null)
+            {
+                bubble.canvasGroup.alpha = 1f;
+                bubble.canvasGroup.interactable = true;
+                bubble.canvasGroup.blocksRaycasts = true;
+            }
+
+            bubble.Setup(
+                options[i].text,
+                options[i].category,
+                this
+            );
+
+            bubble.transform.SetAsLastSibling();
             bubbles.Add(bubble);
+
+            Debug.Log(
+                $"[RocksFlow] Created bubble: " +
+                $"category={options[i].category}, " +
+                $"text={options[i].text}, " +
+                $"position={rect.anchoredPosition}"
+            );
         }
+
+        Canvas.ForceUpdateCanvases();
+
+        Debug.Log(
+            $"[RocksFlow] Sort screen opened with {bubbles.Count} bubbles."
+        );
     }
 
-    public void HandleDrop(EDISortableBubble bubble, PointerEventData eventData)
+    public void HandleDrop(
+        EDISortableBubble bubble,
+        PointerEventData eventData
+    )
     {
         EDISortDropZone zone = ResolveZone(eventData);
 
-        if (zone != null && zone.acceptedCategory == bubble.category)
+        if (
+            zone != null &&
+            zone.acceptedCategory == bubble.category
+        )
         {
             SnapIntoZone(bubble, zone);
             bubble.Lock();
+
             correctCount++;
 
             if (correctCount >= bubbles.Count)
             {
-                Debug.Log("EDI sort complete: all bubbles placed correctly.");
+                Debug.Log(
+                    "[RocksFlow] All bubbles placed correctly."
+                );
+
                 OnSortComplete?.Invoke();
             }
         }
@@ -70,29 +180,72 @@ public class SortScreenController : MonoBehaviour
         }
     }
 
-    private EDISortDropZone ResolveZone(PointerEventData eventData)
+    private EDISortDropZone ResolveZone(
+        PointerEventData eventData
+    )
     {
-        if (RectTransformUtility.RectangleContainsScreenPoint(factZone.rect, eventData.position))
+        if (
+            factZone != null &&
+            RectTransformUtility.RectangleContainsScreenPoint(
+                factZone.rect,
+                eventData.position
+            )
+        )
+        {
             return factZone;
-        if (RectTransformUtility.RectangleContainsScreenPoint(thoughtZone.rect, eventData.position))
+        }
+
+        if (
+            thoughtZone != null &&
+            RectTransformUtility.RectangleContainsScreenPoint(
+                thoughtZone.rect,
+                eventData.position
+            )
+        )
+        {
             return thoughtZone;
+        }
+
         return null;
     }
 
-    private void SnapIntoZone(EDISortableBubble bubble, EDISortDropZone zone)
+    private void SnapIntoZone(
+        EDISortableBubble bubble,
+        EDISortDropZone zone
+    )
     {
-        RectTransform target = zone.slotsContainer != null ? zone.slotsContainer : zone.rect;
-        bubble.transform.SetParent(target, worldPositionStays: false);
+        RectTransform target =
+            zone.slotsContainer != null
+                ? zone.slotsContainer
+                : zone.rect;
+
+        bubble.transform.SetParent(
+            target,
+            false
+        );
 
         int slotIndex = target.childCount - 1;
-        ((RectTransform)bubble.transform).anchoredPosition = new Vector2(0f, 50f - slotIndex * 100f);
+
+        RectTransform bubbleRect =
+            bubble.GetComponent<RectTransform>();
+
+        bubbleRect.anchoredPosition =
+            new Vector2(
+                0f,
+                50f - slotIndex * 100f
+            );
     }
 
     private void Clear()
     {
-        foreach (EDISortableBubble b in bubbles)
-            if (b != null)
-                Destroy(b.gameObject);
+        foreach (EDISortableBubble bubble in bubbles)
+        {
+            if (bubble != null)
+            {
+                Destroy(bubble.gameObject);
+            }
+        }
+
         bubbles.Clear();
     }
 }

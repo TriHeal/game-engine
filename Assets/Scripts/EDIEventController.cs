@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
+using System;
+using TMPro;
 
 /// <summary>
 /// Owns one EDI ("Emotional Debugging") rock event: cracking the rock open
@@ -68,6 +70,74 @@ public class EDIEventController : MonoBehaviour
     {
         if (sortScreen != null)
             sortScreen.OnSortComplete.AddListener(OnSortingComplete);
+    }
+
+    private void OnEnable()
+    {
+        RealtimeSessionListener.ActivityChanged += ApplyRealtimeContent;
+        ApplyRealtimeContent();
+    }
+
+    private void OnDisable()
+    {
+        RealtimeSessionListener.ActivityChanged -= ApplyRealtimeContent;
+    }
+
+    private void ApplyRealtimeContent()
+    {
+        RocksBreakFlowDetails details =
+            RealtimeSessionListener.CurrentRocksDetails;
+
+        if (details == null)
+        {
+            Debug.Log(
+                "[RocksFlow] Waiting for therapist content."
+            );
+
+            if (separateButton != null && !started)
+            {
+                separateButton.SetActive(false);
+            }
+
+            return;
+        }
+
+        originalText = details.eventTitle ?? string.Empty;
+        factOptions = details.facts ?? Array.Empty<string>();
+        thoughtOptions = details.thoughts ?? Array.Empty<string>();
+
+        if (engravedRockText != null)
+        {
+            TMP_Text textComponent =
+                engravedRockText.GetComponent<TMP_Text>();
+
+            if (textComponent == null)
+            {
+                textComponent =
+                    engravedRockText.GetComponentInChildren<TMP_Text>(true);
+            }
+
+            if (textComponent != null)
+            {
+                textComponent.text = originalText;
+            }
+        }
+
+        bool hasContent =
+            !string.IsNullOrWhiteSpace(originalText) &&
+            (factOptions.Length > 0 || thoughtOptions.Length > 0);
+
+        if (separateButton != null && !started)
+        {
+            separateButton.SetActive(hasContent);
+        }
+
+        Debug.Log(
+            $"[RocksFlow] Content received: " +
+            $"title={originalText}, " +
+            $"facts={factOptions.Length}, " +
+            $"thoughts={thoughtOptions.Length}"
+        );
     }
 
     public void Separate()
@@ -155,7 +225,7 @@ public class EDIEventController : MonoBehaviour
 
         for (int i = options.Count - 1; i > 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(0, i + 1);
             (options[i], options[j]) = (options[j], options[i]);
         }
 
