@@ -129,7 +129,7 @@ public class LoginScreenController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private const bool VerifyOtpWithBackendInEditor = false;
+    private const bool VerifyOtpWithBackendInEditor = true;
 
     private void EnterMockAuthMode()
     {
@@ -196,28 +196,51 @@ public class LoginScreenController : MonoBehaviour
 
     /// <summary>Wired to the Submit button's OnClick; also auto-called once the 6th digit is entered.</summary>
     public void Submit()
-    {
-        if (submitting || transitioning) return;
+{
+    if (submitting || transitioning) return;
+
 #if UNITY_EDITOR
-        if (auth == null && !mockAuthMode) return;
+    if (auth == null && !mockAuthMode) return;
 #else
-        if (auth == null) return;
+    if (auth == null) return;
 #endif
-        if (!AllDigitsFilled()) return;
 
-        var code = new StringBuilder(digitFields.Length);
-        foreach (var field in digitFields) code.Append(field.text);
+    if (!AllDigitsFilled()) return;
+
+    var code = new StringBuilder(digitFields.Length);
+
+    foreach (var field in digitFields)
+    {
+        code.Append(field.text);
+    }
 
 #if UNITY_EDITOR
-        if (mockAuthMode && !VerifyOtpWithBackendInEditor)
-        {
-            Debug.Log("[Login] Editor mock auth -> accepting any 6-digit code");
-            StartCoroutine(SignIn("mock-token"));
-            return;
-        }
-#endif
-        StartCoroutine(VerifyCode(code.ToString()));
+    if (mockAuthMode && !VerifyOtpWithBackendInEditor)
+    {
+        Debug.Log("[Login] Editor mock auth -> accepting any 6-digit code");
+
+        SessionContext.Save(
+            "patient-mock",
+            "session-mock",
+            "liveSessions/session-mock",
+            new[]
+            {
+                new SessionActivitySelection
+                {
+                    type = "event_processing",
+                    order = 1,
+                    status = "pending"
+                }
+            }
+        );
+
+        StartCoroutine(SignIn("mock-token"));
+        return;
     }
+#endif
+
+    StartCoroutine(VerifyCode(code.ToString()));
+}
 
     private IEnumerator VerifyCode(string code)
     {
@@ -261,6 +284,13 @@ public class LoginScreenController : MonoBehaviour
 
             Debug.Log(
                 $"[Login] OTP verified. role={response.role}, patientId={response.patientId}, sessionId={response.sessionId}, realtimePath={response.realtimePath}, activities={response.activities?.Length ?? 0}"
+            );
+
+            SessionContext.Save(
+                response.patientId,
+                response.sessionId,
+                response.realtimePath,
+                response.activities
             );
 
             yield return SignIn(response.token);
@@ -372,22 +402,16 @@ public class LoginScreenController : MonoBehaviour
         public string patientId;
         public string sessionId;
         public string realtimePath;
-        public ActivitySelection[] activities;
+        public SessionActivitySelection[] activities;
     }
 
-    [Serializable]
-    private class ActivitySelection
-    {
-        public string type;
-        public int order;
-        public string status;
-    }
 
 #if UNITY_EDITOR
     [UnityEditor.MenuItem("Tri-Heal/Login/Clear Editor Session")]
     private static void ClearEditorSession()
     {
         PlayerPrefs.DeleteKey(MockSignedInKey);
+        SessionContext.Clear();
         PlayerPrefs.Save();
 
         Debug.Log("[Login] Editor mock session cleared.");
