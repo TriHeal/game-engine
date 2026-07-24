@@ -77,7 +77,7 @@ public class RealtimeSessionListener : MonoBehaviour
             ActiveActivityType == activityType;
     }
 
-    private static void SetActiveActivity(
+    public static void SetActiveActivity(
         LiveActivity activity
     )
     {

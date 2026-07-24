@@ -42,10 +42,10 @@ public class HomeScreenController : MonoBehaviour
     {
         if (!SessionContext.Load())
         {
-            SetActivityState(breathingButton, false);
+            SetActivityState(breathingButton, true);
             SetActivityState(stoneBreakButton, false);
             SetActivityState(memoryLakeButton, false);
-            SetActivityState(bondingForestButton, false);
+            SetActivityState(bondingForestButton, true);
             return;
         }
 

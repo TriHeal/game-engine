@@ -88,6 +88,16 @@ public class EDIEventController : MonoBehaviour
         RocksBreakFlowDetails details =
             RealtimeSessionListener.CurrentRocksDetails;
 
+        // Work-around: support demo mode: use the data on our controller
+        // instead of going to the server
+        if (SessionContext.HasSession && SessionContext.Current.sessionId == "session-demo-111111")
+        {
+            details = new RocksBreakFlowDetails();
+            details.eventTitle = originalText;
+            details.facts = factOptions;
+            details.thoughts = thoughtOptions;
+        }
+        
         if (details == null)
         {
             Debug.Log(
