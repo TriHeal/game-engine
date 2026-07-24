@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Controls the activity-selection screen.
-/// Only activities selected by the therapist for the current session are shown.
+/// Activities selected for the current session are enabled immediately.
+/// Activities not selected by the therapist remain greyed out and disabled.
 /// </summary>
 public class HomeScreenController : MonoBehaviour
 {
@@ -24,61 +25,72 @@ public class HomeScreenController : MonoBehaviour
     private void OnEnable()
     {
         SessionContext.Changed += RefreshAvailableActivities;
-        RealtimeSessionListener.ActivityChanged += RefreshAvailableActivities;
 
-        Debug.Log("[HomeScreen] Activated -> refreshing activity states.");
+        Debug.Log(
+            "[HomeScreen] Activated -> refreshing selected activities."
+        );
+
         RefreshAvailableActivities();
     }
 
     private void OnDisable()
     {
         SessionContext.Changed -= RefreshAvailableActivities;
-        RealtimeSessionListener.ActivityChanged -= RefreshAvailableActivities;
     }
 
     private void RefreshAvailableActivities()
     {
         if (!SessionContext.Load())
         {
-            SetActivityState(breathingButton, false, false);
-            SetActivityState(stoneBreakButton, false, false);
-            SetActivityState(memoryLakeButton, false, false);
-            SetActivityState(bondingForestButton, false, false);
+            SetActivityState(breathingButton, false);
+            SetActivityState(stoneBreakButton, false);
+            SetActivityState(memoryLakeButton, false);
+            SetActivityState(bondingForestButton, false);
             return;
         }
 
-        bool breathingSelected = HasAnyActivity("breathing");
-        bool rocksSelected = HasAnyActivity("event_processing");
-        bool memorySelected = HasAnyActivity("memory_lake", "memory_book");
-        bool bondingSelected = HasAnyActivity("bonding_forest", "tree_forest");
+        bool breathingSelected =
+            HasAnyActivity("breathing");
+
+        bool rocksSelected =
+            HasAnyActivity("event_processing");
+
+        bool memorySelected =
+            HasAnyActivity(
+                "memory_lake",
+                "memory_book"
+            );
+
+        bool bondingSelected =
+            HasAnyActivity(
+                "bonding_forest",
+                "tree_forest"
+            );
 
         SetActivityState(
             breathingButton,
-            breathingSelected,
-            RealtimeSessionListener.IsActivityActive("breathing")
+            breathingSelected
         );
 
         SetActivityState(
             stoneBreakButton,
-            rocksSelected,
-            RealtimeSessionListener.IsActivityActive("event_processing")
+            rocksSelected
         );
 
         SetActivityState(
             memoryLakeButton,
-            memorySelected,
-            RealtimeSessionListener.IsActivityActive("memory_lake") ||
-            RealtimeSessionListener.IsActivityActive("memory_book")
+            memorySelected
         );
 
         SetActivityState(
             bondingForestButton,
-            bondingSelected,
-            RealtimeSessionListener.IsActivityActive("bonding_forest") ||
-            RealtimeSessionListener.IsActivityActive("tree_forest")
+            bondingSelected
         );
     }
-    private bool HasAnyActivity(params string[] activityTypes)
+
+    private bool HasAnyActivity(
+        params string[] activityTypes
+    )
     {
         foreach (string activityType in activityTypes)
         {
@@ -90,11 +102,10 @@ public class HomeScreenController : MonoBehaviour
 
         return false;
     }
-    
+
     private void SetActivityState(
-    GameObject activityButton,
-    bool selected,
-    bool active
+        GameObject activityButton,
+        bool selected
     )
     {
         if (activityButton == null)
@@ -104,30 +115,30 @@ public class HomeScreenController : MonoBehaviour
 
         activityButton.SetActive(true);
 
-        Button button = activityButton.GetComponent<Button>();
+        Button button =
+            activityButton.GetComponent<Button>();
 
         if (button == null)
         {
             Debug.LogWarning(
                 $"[HomeScreen] No Button component found on {activityButton.name}."
             );
+
             return;
         }
 
-        CanvasGroup canvasGroup = activityButton.GetComponent<CanvasGroup>();
+        CanvasGroup canvasGroup =
+            activityButton.GetComponent<CanvasGroup>();
 
         if (canvasGroup == null)
         {
-            canvasGroup = activityButton.AddComponent<CanvasGroup>();
+            canvasGroup =
+                activityButton.AddComponent<CanvasGroup>();
         }
 
-        bool clickable = selected && active;
-
-        button.interactable = clickable;
-        canvasGroup.interactable = clickable;
-        canvasGroup.blocksRaycasts = clickable;
-
-        // Only activities not selected for the session are greyed out.
+        button.interactable = selected;
+        canvasGroup.interactable = selected;
+        canvasGroup.blocksRaycasts = selected;
         canvasGroup.alpha = selected ? 1f : 0.4f;
     }
 
@@ -153,11 +164,14 @@ public class HomeScreenController : MonoBehaviour
 
     public void OpenSelectAvatar()
     {
-        if (AvatarSelectScreen != null)
+        if (AvatarSelectScreen == null)
         {
-            AvatarSession.Instance.ClearSavedAvatar();
-            gameObject.SetActive(false);
-            AvatarSelectScreen.SetActive(true);
+            return;
         }
+
+        AvatarSession.Instance.ClearSavedAvatar();
+
+        gameObject.SetActive(false);
+        AvatarSelectScreen.SetActive(true);
     }
 }
