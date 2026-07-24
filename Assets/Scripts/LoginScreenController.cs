@@ -26,6 +26,10 @@ using Firebase.Auth;
 /// </summary>
 public class LoginScreenController : MonoBehaviour
 {
+#if UNITY_EDITOR
+    private const bool BypassOtpInEditor = true;
+#endif
+
     [Header("Screens")]
     public GameObject loginScreen;
     public CanvasGroup loginGroup;
@@ -66,6 +70,48 @@ public class LoginScreenController : MonoBehaviour
         }
 
         HideError();
+
+#if UNITY_EDITOR
+        if (BypassOtpInEditor)
+        {
+            SessionContext.Save(
+                "patient-editor-bypass",
+                "session-editor-bypass",
+                "liveSessions/session-editor-bypass",
+                new[]
+                {
+                    new SessionActivitySelection
+                    {
+                        type = "breathing",
+                        order = 1,
+                        status = "pending"
+                    },
+                    new SessionActivitySelection
+                    {
+                        type = "event_processing",
+                        order = 2,
+                        status = "pending"
+                    },
+                    new SessionActivitySelection
+                    {
+                        type = "memory_lake",
+                        order = 3,
+                        status = "pending"
+                    },
+                    new SessionActivitySelection
+                    {
+                        type = "bonding_forest",
+                        order = 4,
+                        status = "pending"
+                    }
+                }
+            );
+
+            Debug.Log("[Login] Editor OTP bypass enabled.");
+            EnterNextScreenImmediately();
+            return;
+        }
+#endif
 
         for (int i = 0; i < digitFields.Length; i++)
         {
