@@ -1,6 +1,8 @@
-#if UNITY_EDITOR || UNITY_STANDALONE_OSX
+// We always want to use REST work-around since the firebase framework
+// doesn't seems to work (TODO: fix in the future)
+//#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 #define TRIHEAL_FIREBASE_REST
-#endif
+//#endif
 
 using System;
 using System.Collections;
@@ -242,6 +244,9 @@ public class RealtimeSessionListener : MonoBehaviour
                     "RTDB REST URL. Firebase ID " +
                     "token or realtimePath is missing. Retry in 5 seconds"
                 );
+
+                // Since we don't have an acive session, let's clear our Activity (in case we just ended a session)
+                ApplyActivityJson("null");
 
                 // Wait 5 seconds before checking again, keeping the loop alive
                 yield return new WaitForSecondsRealtime(5f);

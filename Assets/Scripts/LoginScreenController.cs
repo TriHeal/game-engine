@@ -249,8 +249,6 @@ public class LoginScreenController : MonoBehaviour
             }
         );
 
-        RealtimeSessionListener.SetActiveActivity(null);
-
         submitting = false;
         transitioning = false;
 
