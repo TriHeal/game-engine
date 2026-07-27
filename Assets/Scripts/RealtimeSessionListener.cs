@@ -1,6 +1,8 @@
-#if UNITY_EDITOR || UNITY_STANDALONE_OSX
+// We always want to use REST work-around since the firebase framework
+// doesn't seems to work (TODO: fix in the future)
+//#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 #define TRIHEAL_FIREBASE_REST
-#endif
+//#endif
 
 using System;
 using System.Collections;
@@ -77,7 +79,7 @@ public class RealtimeSessionListener : MonoBehaviour
             ActiveActivityType == activityType;
     }
 
-    private static void SetActiveActivity(
+    public static void SetActiveActivity(
         LiveActivity activity
     )
     {
@@ -240,10 +242,15 @@ public class RealtimeSessionListener : MonoBehaviour
                 Debug.LogError(
                     "[RealtimeSession] Cannot build " +
                     "RTDB REST URL. Firebase ID " +
-                    "token or realtimePath is missing."
+                    "token or realtimePath is missing. Retry in 5 seconds"
                 );
 
-                yield break;
+                // Since we don't have an acive session, let's clear our Activity (in case we just ended a session)
+                ApplyActivityJson("null");
+
+                // Wait 5 seconds before checking again, keeping the loop alive
+                yield return new WaitForSecondsRealtime(5f);
+                continue;
             }
 
             using (
@@ -262,6 +269,7 @@ public class RealtimeSessionListener : MonoBehaviour
                 {
                     lastRestError = null;
 
+                    Debug.Log("[RealtimeSession] Got result: '" + request.downloadHandler.text + "'");
                     ApplyActivityJson(
                         request.downloadHandler.text
                     );
