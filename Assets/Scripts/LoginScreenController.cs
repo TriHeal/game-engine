@@ -1,6 +1,8 @@
-#if UNITY_EDITOR || UNITY_STANDALONE_OSX
+// We always want to use REST work-around since the firebase framework
+// doesn't seems to work (TODO: fix in the future)
+//#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 #define TRIHEAL_FIREBASE_REST
-#endif
+//#endif
 
 using System;
 using System.Collections;
@@ -39,8 +41,11 @@ public class LoginScreenController : MonoBehaviour
     public float crossFadeDuration = 0.8f;
 
     [Header("Code Entry")]
-    [Tooltip("Exactly 6 single-character TMP_InputField boxes.")]
-    public TMP_InputField[] digitFields = new TMP_InputField[6];
+    [Tooltip("The single invisible input field overlaying the code area.")]
+    public TMP_InputField hiddenInputField;
+
+    [Tooltip("Exactly 6 TMP_Text UI elements inside your visual orb containers.")]
+    public TMP_Text[] digitLabels = new TMP_Text[6];
 
     public Button submitButton;
     public TMP_Text errorText;
@@ -99,17 +104,10 @@ public class LoginScreenController : MonoBehaviour
 
         HideError();
 
-        // Register input listeners
-        for (int i = 0; i < digitFields.Length; i++)
+        // Register input listener for the single hidden field
+        if (hiddenInputField != null)
         {
-            int index = i;
-
-            if (digitFields[i] != null)
-            {
-                digitFields[i].onValueChanged.AddListener(
-                    value => OnDigitChanged(index, value)
-                );
-            }
+            hiddenInputField.onValueChanged.AddListener(OnInputChanged);
         }
 
         if (submitButton != null)
@@ -309,42 +307,24 @@ public class LoginScreenController : MonoBehaviour
         }
     }
 
-    private void OnDigitChanged(int index, string value)
+    private void OnInputChanged(string value)
     {
-        if (string.IsNullOrEmpty(value))
+        // Update visual labels matching the string length
+        for (int i = 0; i < digitLabels.Length; i++)
         {
-            if (index > 0)
+            if (digitLabels[i] == null) continue;
+
+            if (i < value.Length)
             {
-                digitFields[index - 1].Select();
-                digitFields[index - 1].ActivateInputField();
+                digitLabels[i].text = value[i].ToString();
             }
-
-            return;
+            else
+            {
+                digitLabels[i].text = "";
+            }
         }
 
-        char character = value[value.Length - 1];
-
-        if (!char.IsDigit(character))
-        {
-            digitFields[index].SetTextWithoutNotify("");
-            return;
-        }
-
-        if (digitFields[index].text != character.ToString())
-        {
-            digitFields[index].SetTextWithoutNotify(character.ToString());
-        }
-
-        if (index < digitFields.Length - 1)
-        {
-            digitFields[index + 1].Select();
-            digitFields[index + 1].ActivateInputField();
-        }
-        else
-        {
-            digitFields[index].DeactivateInputField();
-        }
-
+        // Auto-submit when all 6 digits are typed
         if (AllDigitsFilled())
         {
             Submit();
@@ -353,15 +333,7 @@ public class LoginScreenController : MonoBehaviour
 
     private bool AllDigitsFilled()
     {
-        foreach (TMP_InputField field in digitFields)
-        {
-            if (field == null || field.text.Length != 1)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return hiddenInputField != null && hiddenInputField.text.Length == 6;
     }
 
     public void Submit()
@@ -383,14 +355,10 @@ public class LoginScreenController : MonoBehaviour
             return;
         }
 
-        var code = new StringBuilder(digitFields.Length);
+        // Force the input field to lose focus so Android closes the keyboard
+        hiddenInputField.DeactivateInputField();
 
-        foreach (TMP_InputField field in digitFields)
-        {
-            code.Append(field.text);
-        }
-
-        StartCoroutine(VerifyCode(code.ToString()));
+        StartCoroutine(VerifyCode(hiddenInputField.text.Trim()));
     }
 
     private IEnumerator VerifyCode(string code)
@@ -601,12 +569,9 @@ public class LoginScreenController : MonoBehaviour
 
     private void SetInteractable(bool interactable)
     {
-        foreach (TMP_InputField field in digitFields)
+        if (hiddenInputField != null)
         {
-            if (field != null)
-            {
-                field.interactable = interactable;
-            }
+            hiddenInputField.interactable = interactable;
         }
 
         if (submitButton != null)
@@ -617,18 +582,23 @@ public class LoginScreenController : MonoBehaviour
 
     private void ClearDigits()
     {
-        foreach (TMP_InputField field in digitFields)
+        if (hiddenInputField != null)
         {
-            if (field != null)
+            hiddenInputField.SetTextWithoutNotify("");
+        }
+
+        foreach (TMP_Text label in digitLabels)
+        {
+            if (label != null)
             {
-                field.SetTextWithoutNotify("");
+                label.text = "";
             }
         }
 
-        if (digitFields.Length > 0 && digitFields[0] != null)
+        if (hiddenInputField != null && hiddenInputField.gameObject.activeInHierarchy)
         {
-            digitFields[0].Select();
-            digitFields[0].ActivateInputField();
+            hiddenInputField.Select();
+            hiddenInputField.ActivateInputField();
         }
     }
 

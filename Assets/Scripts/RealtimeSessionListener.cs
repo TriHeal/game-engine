@@ -240,10 +240,12 @@ public class RealtimeSessionListener : MonoBehaviour
                 Debug.LogError(
                     "[RealtimeSession] Cannot build " +
                     "RTDB REST URL. Firebase ID " +
-                    "token or realtimePath is missing."
+                    "token or realtimePath is missing. Retry in 5 seconds"
                 );
 
-                yield break;
+                // Wait 5 seconds before checking again, keeping the loop alive
+                yield return new WaitForSecondsRealtime(5f);
+                continue;
             }
 
             using (
@@ -262,6 +264,7 @@ public class RealtimeSessionListener : MonoBehaviour
                 {
                     lastRestError = null;
 
+                    Debug.Log("[RealtimeSession] Got result: '" + request.downloadHandler.text + "'");
                     ApplyActivityJson(
                         request.downloadHandler.text
                     );
